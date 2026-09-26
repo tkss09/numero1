@@ -1410,6 +1410,27 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="categoryInfoModal">
+        <div class="contact-modal" style="text-align: center;">
+            <div style="width: 50px; height: 50px; background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #dc2626; font-size: 1.3rem;">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 style="margin-bottom: 8px;" id="infoModalTitle">Demande d'informations</h3>
+            <p style="font-size: 0.9rem; color: #fff; font-weight: 600; margin-bottom: 15px; background: rgba(255,255,255,0.04); padding: 12px; border-radius: 10px; border: 1px solid var(--border); word-break: break-word;">
+                Besoin de plus d'informations concernant ce service ?
+            </p>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px;">
+                Si tu as besoin de plus d'informations, contacte-moi directement via Snapchat. En cliquant ci-dessous, le message sera copié et tu seras dirigé vers mon Snapchat !
+            </p>
+            <div class="social-buttons">
+                <button class="social-btn snapchat-btn" id="confirmInfoSnapBtn" style="padding: 14px; font-weight: 800;">
+                    <i class="fa-brands fa-snapchat fa-lg"></i> Me contacter sur Snapchat
+                </button>
+            </div>
+            <span class="modal-close-text" onclick="closeCategoryInfoModal()">Fermer</span>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="serviceDetailModal">
         <div class="contact-modal" style="text-align: left;">
             <div style="font-size: 0.72rem; color: #ef4444; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;" id="modalCatName">Catégorie</div>
@@ -2024,7 +2045,7 @@
                         info: "<br><br>Permet de pouvoir se présenter à l'examen du code de la route et à la conduite." 
                     },
                     { 
-                        name: "Contrôle technique sans présentation du véhicule", 
+                        name: "Contrôle technique sans presentation du véhicule", 
                         price: "Sur Devis", 
                         info: "<br><br><strong>Documents et informations à fournir :</strong><br>• CARTE GRISE EN PHOTO LISIBLE<br>• VIDÉO DU VÉHICULE<br>• PHOTO DU COMPTEUR AVEC LE KILOMÉTRAGE<br><br><strong>TRÈS IMPORTANT :</strong><br>• PAS DE VOITURE EN FOURRIÈRE<br>• SI FICHE D'IMMOBILISATION BESOIN EN MAIN PROPRE<br>• PAS DE VÉHICULE ACCIDENTÉ" 
                     },
@@ -2237,14 +2258,14 @@ function openCategoryPage(catId) {
             cat.services.forEach((srv, idx) => {
                 if (idx === 0) return; // Ignore le placeholder "Sélectionner un service"
                 servicesListHtml += `
-                    <div class="product-card" style="padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
+                    <div class="product-card" style="padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;" onclick="openCategoryServiceInfo('${cat.id}', ${idx})">
                         <div style="flex: 1; min-width: 250px;">
                             <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; color: #fff;">${srv.name}</h4>
                             <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; word-break: break-word;">${srv.info}</p>
                         </div>
                         <div style="display: flex; align-items: center; gap: 15px;">
                             <span style="font-size: 1.15rem; font-weight: 800; color: #ef4444; white-space: nowrap;">${srv.price}</span>
-                            <button class="add-cart-btn" onclick="openOrderPopupDirect('${cat.id}', ${idx})">Commander</button>
+                            <button class="add-cart-btn" onclick="event.stopPropagation(); openOrderPopupDirect('${cat.id}', ${idx})">Commander</button>
                         </div>
                     </div>
                 `;
@@ -2274,6 +2295,40 @@ function openCategoryPage(catId) {
 
             detailContainer.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openCategoryServiceInfo(catId, serviceIdx) {
+            const cat = categories.find(c => c.id === catId);
+            if (!cat) return;
+            const selectedService = cat.services[serviceIdx];
+            if (!selectedService) return;
+
+            const infoModalTitle = document.getElementById('infoModalTitle');
+            if (infoModalTitle) {
+                infoModalTitle.innerText = selectedService.name;
+            }
+
+            const infoText = `Bonjour 👑NUMERO 1👑, j'ai besoin de plus d'informations concernant la prestation : ${selectedService.name}`;
+
+            const confirmInfoBtn = document.getElementById('confirmInfoSnapBtn');
+            if (confirmInfoBtn) {
+                confirmInfoBtn.onclick = function() {
+                    closeCategoryInfoModal();
+                    copyAndOpenSnapchat(infoText);
+                };
+            }
+
+            const modal = document.getElementById('categoryInfoModal');
+            if (modal) {
+                modal.classList.add('open');
+            }
+        }
+
+        function closeCategoryInfoModal() {
+            const modal = document.getElementById('categoryInfoModal');
+            if (modal) {
+                modal.classList.remove('open');
+            }
         }
 
         function showMainPage() {
@@ -2569,72 +2624,62 @@ function openCategoryPage(catId) {
     }
 
     /* Bouton flottant pour ouvrir/fermer le chatbot */
-    #chatbot-toggle-btn {
-        background: linear-gradient(135deg, #b91c1c, #dc2626);
-        color: #ffffff;
-        border: none;
+    #chatbot-button {
         width: 60px;
         height: 60px;
         border-radius: 50%;
+        background: linear-gradient(135deg, #b91c1c, #dc2626);
+        color: white;
+        border: none;
         cursor: pointer;
-        box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+        box-shadow: 0 4px 20px rgba(220, 38, 38, 0.5);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
-        transition: transform 0.3s ease, background 0.3s ease;
+        font-size: 24px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    #chatbot-toggle-btn:hover {
+    #chatbot-button:hover {
         transform: scale(1.08);
-        background: linear-gradient(135deg, #dc2626, #ef4444);
+        box-shadow: 0 6px 25px rgba(220, 38, 38, 0.7);
     }
 
-    /* Fenêtre de discussion positionnée à gauche (Desktop par défaut) */
-#chatbot-window {
-    position: absolute;
-    bottom: 75px;
-    left: 0; /* Aligné à gauche par rapport au bouton */
-    width: 350px;
-    max-width: 90vw;
-    height: 480px;
-    background: #121218;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-    animation: chatSlideIn 0.3s ease forwards;
-}
-
-/* Adaptation pour les téléphones (écrans de 480px de large ou moins) */
-@media screen and (max-width: 480px) {
+    /* Fenêtre de discussion */
     #chatbot-window {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        max-width: 100%;
-        height: 85vh; /* Occupe une grande partie de la hauteur de l'écran mobile */
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-        border-left: none;
-        border-right: none;
+        position: absolute;
+        bottom: 75px;
+        left: 0; /* Alignement à gauche */
+        width: 350px;
+        max-width: calc(100vw - 40px);
+        height: 480px;
+        max-height: calc(100vh - 120px);
+        background: #121218;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px) scale(0.95);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
     }
-}
 
-    @keyframes chatSlideIn {
-        from { opacity: 0; transform: translateY(15px); }
-        to { opacity: 1; transform: translateY(0); }
+    #chatbot-window.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
     }
 
-    /* En-tête de la fenêtre de chat */
+    /* En-tête du chat */
     .chatbot-header {
-        background: rgba(18, 18, 24, 0.95);
+        background: linear-gradient(90deg, #181820, #0d0d12);
         padding: 15px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -2643,38 +2688,51 @@ function openCategoryPage(catId) {
     .chatbot-header-info {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
     }
 
     .chatbot-avatar {
-        width: 35px;
-        height: 35px;
-        background: #dc2626;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
+        background: #dc2626;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: 0.9rem;
+        font-size: 18px;
+        font-weight: bold;
     }
 
-    .chatbot-title h4 {
+    .chatbot-title {
         font-size: 0.95rem;
         font-weight: 700;
         color: #fff;
     }
 
-    .chatbot-title span {
+    .chatbot-status {
         font-size: 0.72rem;
-        color: #94a3b8;
+        color: #10b981;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .chatbot-status::before {
+        content: '';
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        background-color: #10b981;
+        border-radius: 50%;
     }
 
     .chatbot-close {
-        background: none;
+        background: transparent;
         border: none;
-        color: #94a3b8;
+        color: var(--text-muted);
+        font-size: 18px;
         cursor: pointer;
-        font-size: 1rem;
         transition: color 0.2s;
     }
 
@@ -2682,18 +2740,19 @@ function openCategoryPage(catId) {
         color: #fff;
     }
 
-    /* Corps de la conversation (historique des messages) */
-    .chatbot-body {
+    /* Zone des messages */
+    .chatbot-messages {
         flex: 1;
         padding: 15px;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
         gap: 12px;
-        background: #0a0a0f;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
     }
 
-    .chat-message {
+    .chatbot-msg {
         max-width: 80%;
         padding: 10px 14px;
         border-radius: 14px;
@@ -2702,49 +2761,26 @@ function openCategoryPage(catId) {
         word-break: break-word;
     }
 
-    .chat-message.bot {
+    .chatbot-msg.bot {
         background: rgba(255, 255, 255, 0.06);
         color: #e2e8f0;
-        align-self: flex-start;
         border-bottom-left-radius: 4px;
-        border: 1px solid rgba(255, 255, 255, 0.04);
+        align-self: flex-start;
+        border: 1px solid var(--border);
     }
 
-    .chat-message.user {
+    .chatbot-msg.user {
         background: #dc2626;
-        color: #fff;
-        align-self: flex-end;
+        color: white;
         border-bottom-right-radius: 4px;
+        align-self: flex-end;
     }
 
-    /* Bouton Snapchat jaune demandé (#FFFC00) intégré dans les messages complexes */
-    .snapchat-action-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        margin-top: 8px;
-        background: #fffc00 !important;
-        color: #000000 !important;
-        font-weight: 800;
-        font-size: 0.82rem;
-        padding: 10px 16px;
-        border-radius: 50px;
-        text-decoration: none;
-        transition: background 0.2s, transform 0.2s;
-        box-shadow: 0 4px 12px rgba(255, 252, 0, 0.3);
-    }
-
-    .snapchat-action-btn:hover {
-        background: #e5e200 !important;
-        transform: translateY(-2px);
-    }
-
-    /* Zone de saisie du message utilisateur */
-    .chatbot-footer {
-        padding: 12px 15px;
-        background: rgba(18, 18, 24, 0.95);
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    /* Zone de saisie */
+    .chatbot-input-area {
+        padding: 12px;
+        background: rgba(5, 5, 7, 0.8);
+        border-top: 1px solid var(--border);
         display: flex;
         gap: 8px;
     }
@@ -2752,22 +2788,21 @@ function openCategoryPage(catId) {
     .chatbot-input {
         flex: 1;
         background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 25px;
+        border: 1px solid var(--border);
+        border-radius: 20px;
         padding: 10px 15px;
         color: #fff;
         font-size: 0.85rem;
         outline: none;
-        transition: border-color 0.2s;
     }
 
     .chatbot-input:focus {
         border-color: #dc2626;
     }
 
-    .chatbot-send-btn {
+    .chatbot-send {
         background: #dc2626;
-        color: #fff;
+        color: white;
         border: none;
         width: 38px;
         height: 38px;
@@ -2777,172 +2812,175 @@ function openCategoryPage(catId) {
         align-items: center;
         justify-content: center;
         transition: background 0.2s;
-        flex-shrink: 0;
     }
 
-    .chatbot-send-btn:hover {
+    .chatbot-send:hover {
         background: #ef4444;
     }
 </style>
 
-<!-- Structure HTML du Widget de Chat -->
+<!-- Structure HTML du Chatbot -->
 <div id="chatbot-widget">
-    <!-- Bouton flottant -->
-    <button id="chatbot-toggle-btn" onclick="toggleChatbot()" title="Besoin d'aide ? Discutez avec notre assistant">
+    <button id="chatbot-button" onclick="toggleChatbot()" title="Besoin d'aide ?">
         <i class="fa-solid fa-comments"></i>
     </button>
 
-    <!-- Fenêtre de chat -->
     <div id="chatbot-window">
         <div class="chatbot-header">
             <div class="chatbot-header-info">
-                <div class="chatbot-avatar"><i class="fa-solid fa-robot"></i></div>
-                <div class="chatbot-title">
-                    <h4>Assistant 👑 NUMERO 1 👑</h4>
-                    <span>En ligne</span>
+                <div class="chatbot-avatar">👑</div>
+                <div>
+                    <div class="chatbot-title">Assistant 👑NUMERO 1👑</div>
+                    <div class="chatbot-status">En ligne</div>
                 </div>
             </div>
             <button class="chatbot-close" onclick="toggleChatbot()"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
-        <div class="chatbot-body" id="chatbotBody">
-            <!-- Message d'accueil automatique -->
-            <div class="chat-message bot">
-                Bonjour ! Je suis l'assistant virtuel de 👑NUMERO 1👑. Comment puis-je vous aider aujourd'hui (permis, amendes, réductions booking, certificats...) ?
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-msg bot">
+                Bonjour ! 👋 Comment puis-je vous aider aujourd'hui concernant nos services de permis, d'amendes ou de documents administratifs ?
             </div>
         </div>
 
-        <div class="chatbot-footer">
-            <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Posez votre question ici..." onkeydown="handleChatKeyDown(event)">
-            <button class="chatbot-send-btn" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-        </div>
+        <form class="chatbot-input-area" onsubmit="handleChatSubmit(event)">
+            <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Écrivez votre message..." autocomplete="off">
+            <button type="submit" class="chatbot-send"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
     </div>
 </div>
 
-<!-- Script JavaScript du Chatbot -->
+<!-- Script JS du Chatbot -->
 <script>
-    const SNAPCHAT_URL = "https://www.snapchat.com/@jackda10";
-
-    const chatbotKnowledgeBase = [
-        {
-            keywords: ["amende", "amendes", "contravention", "majorée", "90", "45", "35"],
-            response: "Nous gérons vos amendes et forfaits majorés avec des tarifs fixes (à partir de 10€) et un traitement sans perte de points sur votre permis (hors flagrant délit). Souhaitez-vous valider votre prise en charge ?"
-        },
-        {
-            keywords: ["salut", "bonjour", "salam", "coucou", "hey", "yo", "ça va", "cv", "wesh"],
-            response: "Salut à toi ! Comment ça va ? Dis-moi comment je peux t'aider aujourd'hui."
-        },
-        {
-            keywords: ["merci", "top", "cool", "impec", "impeccable", "super", "génial", "merci bcp"],
-            response: "Avec plaisir ! N'hésite pas si tu as d'autres questions ou besoin d'un coup de main. 😊"
-        },
-        {
-            keywords: ["certificat", "hospitalisation", "travail", "arret", "arrêt", "justificatif", "medical", "médical", "maladie", "boulot"],
-            response: "On propose des documents officiels et certificats d'hospitalisation en toute confidentialité pour tes démarches ou ton travail. Contacte-nous pour voir les détails."
-        },
-        {
-            keywords: ["au revoir", "bye", "a+klin", "à plus", "tchao"],
-            response: "À bientôt ! Passe une excellente journée et n'hésite pas à repasser si besoin."
-        },
-        {
-            keywords: ["permis", "decenale", "points", "code", "annulation", "retrait", "conduite"],
-            response: "Spécialiste depuis 10 ans dans l'accompagnement des dossiers de permis, annulation, code et tests psychotechniques. Nous vous offrons une assistance discrète et sécurisée."
-        },
-        {
-            keywords: ["booking", "hôtel", "hotel", "vacances", "partir", "billet", "reservation", "réservation", "reductions", "réduction", "-50", "moins cher"],
-            response: "Tu veux voyager sans te ruiner ? On te propose jusqu'à -50% de réduction sur tes réservations d'hôtels Dis-nous ta destination sur Snapchat !"
-        },
-        {
-            keywords: ["contact", "joindre", "parler", "humain", "personne", "telephone", "téléphone", "discuter", "aide", "sos", "admin", "createur", "soutenir", "repondre", "répondre", "bot", "robot"],
-            response: "Le plus simple pour qu'on discute de ton cas le mieux c'est de nous écrire directement sur notre Snapchat officiel !"
-        },
-        {
-           keywords: ["aide", "comment", "fonctionne", "tutoriel", "guide"],
-           response: "Je suis là pour vous guider ! Dites-moi ce que vous cherchez (par exemple : les tarifs, les horaires ou la création de dossier) et je vous orienterai."
-        },
-        {  
-           keywords: ["snap", "snapchat"],
-           response: "Voici mon snapchat @ JACKDA10"
-        },
-        {
-            keywords: ["sûr", "fiable", "arnaque", "confiance", "sérieux", "vrai", "légitime", "legit", "escroc", "fake", "sur", "c'est sur", "c'est une arnaque"],
-            response: "Tu peux avoir total confiance : on a des années d'expérience et des milliers de clients satisfaits. Viens échanger avec nous en direct, on te prouvera notre sérieux !"
-        },
-        {
-    keywords: ["sixt", "agence", "caution", "depot de garantie", "prix", "cher", "louer", "voiture", "reservation", "annulation", "frais", "carte bancaire"],
-    response: "Profitez de -50% sur votre location chez Sixt ! Avec un large choix de véhicules récents, la liberté de voyager et un confort optimal sur la route, partez l'esprit tranquille. Réservez vite pour en profiter !"
-        },
-        {
-            keywords: ["tarif", "prix", "combien", "coout", "coût", "coute", "coûte", "devis", "c'est combien", "payer", "paiement", "euro", "euros", "€", "c'est cher", "gratuit", "argent", "facture"],
-            response: "Nos tarifs sont super accessibles (amendes dès 10€, devis sur mesure pour le reste). C'est rapide, discret et efficace. Viens voir avec nous sur Snapchat pour chiffrer ton besoin !"
-        }
-    ];
-
     function toggleChatbot() {
-        const windowElem = document.getElementById('chatbot-window');
-        if (windowElem.style.display === 'flex') {
-            windowElem.style.display = 'none';
-        } else {
-            windowElem.style.display = 'flex';
-            document.getElementById('chatbotInput').focus();
+        const win = document.getElementById('chatbot-window');
+        win.classList.toggle('open');
+    }
+
+    function handleChatSubmit(e) {
+        if (e) e.preventDefault();
+
+        const input = document.getElementById('chatbotInput');
+        if (!input) return;
+
+        const text = input.value.trim();
+        if (!text) return;
+
+        // Ajouter le message de l'utilisateur
+        addChatMessage(text, 'user');
+        input.value = '';
+
+        const cleanText = text.toLowerCase();
+
+        // 1. Amendes
+        if (["amende", "amendes", "contravention", "majorée", "90", "45", "35"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Nous gérons vos amendes et forfaits majorés avec des tarifs fixes (à partir de 10€) et un traitement sans perte de points sur votre permis (hors flagrant délit). Souhaitez-vous valider votre prise en charge ?";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 2. Salutations
+        else if (["salut", "bonjour", "salam", "coucou", "hey", "yo", "ça va", "cv", "wesh"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Salut à toi ! Comment ça va ? Dis-moi comment je peux t'aider aujourd'hui.";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 3. Remerciements
+        else if (["merci", "top", "cool", "impec", "impeccable", "super", "génial", "merci bcp"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Avec plaisir ! N'hésite pas si tu as d'autres questions ou besoin d'un coup de main. 😊";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 4. Certificats & Justificatifs
+        else if (["certificat", "hospitalisation", "travail", "arret", "arrêt", "justificatif", "medical", "médical", "maladie", "boulot"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "On propose des documents officiels et certificats d'hospitalisation en toute confidentialité pour tes démarches ou ton travail. Contacte-nous pour voir les détails.";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 5. Au revoir
+        else if (["au revoir", "bye", "a+klin", "à plus", "tchao"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "À bientôt ! Passe une excellente journée et n'hésite pas à repasser si besoin.";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 6. Permis & Décennale
+        else if (["permis", "decenale", "points", "code", "annulation", "retrait", "conduite"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Spécialiste depuis 10 ans dans l'accompagnement des dossiers de permis, annulation, code et tests psychotechniques. Nous vous offrons une assistance discrète et sécurisée.";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 7. Booking & Hôtels
+        else if (["booking", "hôtel", "hotel", "vacances", "partir", "billet", "reservation", "réservation", "reductions", "réduction", "-50", "moins cher"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Tu veux voyager sans te ruiner ? On te propose jusqu'à -50% de réduction sur tes réservations d'hôtels Dis-nous ta destination sur Snapchat !";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 8. Contact & Humain
+        else if (["contact", "joindre", "parler", "humain", "personne", "telephone", "téléphone", "discuter", "aide", "sos", "admin", "createur", "soutenir", "repondre", "répondre", "bot", "robot"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Le plus simple pour qu'on discute de ton cas le mieux c'est de nous écrire directement sur notre Snapchat officiel !";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 9. Aide & Tutoriel
+        else if (["aide", "comment", "fonctionne", "tutoriel", "guide"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Je suis là pour vous guider ! Dites-moi ce que vous cherchez (par exemple : les tarifs, les horaires ou la création de dossier) et je vous orienterai.";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 10. Snapchat
+        else if (["snap", "snapchat"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Voici mon snapchat @ JACKDA10";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 11. Fiabilité & Confiance
+        else if (["sûr", "fiable", "arnaque", "confiance", "sérieux", "vrai", "légitime", "legit", "escroc", "fake", "sur", "c'est sur", "c'est une arnaque"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Tu peux avoir total confiance : on a des années d'expérience et des milliers de clients satisfaits. Viens échanger avec nous en direct, on te prouvera notre sérieux !";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 12. Sixt
+        else if (["sixt", "agence", "caution", "depot de garantie", "prix", "cher", "louer", "voiture", "reservation", "annulation", "frais", "carte bancaire"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Profitez de -50% sur votre location chez Sixt ! Avec un large choix de véhicules récents, la liberté de voyager et un confort optimal sur la route, partez l'esprit tranquille. Réservez vite pour en profiter !";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // 13. Tarifs & Prix
+        else if (["tarif", "prix", "combien", "coout", "coût", "coute", "coûte", "devis", "c'est combien", "payer", "paiement", "euro", "euros", "€", "c'est cher", "gratuit", "argent", "facture"].some(kw => cleanText.includes(kw))) {
+            setTimeout(() => {
+                const botReply = "Nos tarifs sont super accessibles (amendes dès 10€, devis sur mesure pour le reste). C'est rapide, discret et efficace. Viens voir avec nous sur Snapchat pour chiffrer ton besoin !";
+                addChatMessage(botReply, 'bot');
+            }, 800);
+        }
+        // Réponse par défaut
+        else {
+            setTimeout(() => {
+                const botReply = "Pour traiter votre demande personnalisée rapidement et en toute confidentialité, contactez-moi directement sur Snapchat ! 📲";
+                addChatMessage(botReply, 'bot');
+            }, 800);
         }
     }
 
-    function handleChatKeyDown(event) {
-        if (event.key === 'Enter') {
-            sendChatMessage();
-        }
-    }
-
-    function sendChatMessage() {
-        const inputElem = document.getElementById('chatbotInput');
-        const userText = inputElem.value.trim();
-        if (!userText) return;
-
-        appendMessage(userText, 'user');
-        inputElem.value = '';
-
-        setTimeout(() => {
-            generateBotResponse(userText);
-        }, 500);
-    }
-
-    function appendMessage(text, sender, isComplex = false) {
-        const bodyElem = document.getElementById('chatbotBody');
+    function addChatMessage(text, sender) {
+        const container = document.getElementById('chatbotMessages');
         const msgDiv = document.createElement('div');
-        msgDiv.className = `chat-message ${sender}`;
-        
-        if (isComplex) {
-            msgDiv.innerHTML = text + `<br><a href="${SNAPCHAT_URL}" target="_blank" rel="noopener noreferrer" class="snapchat-action-btn"><i class="fa-brands fa-snapchat"></i> Contactez-nous sur Snapchat</a>`;
-        } else {
-            msgDiv.textContent = text;
-        }
-
-        bodyElem.appendChild(msgDiv);
-        bodyElem.scrollTop = bodyElem.scrollHeight;
-    }
-
-    function generateBotResponse(userInput) {
-        const cleanInput = userInput.toLowerCase();
-        let matchedResponse = null;
-
-        for (const item of chatbotKnowledgeBase) {
-            for (const kw of item.keywords) {
-                if (cleanInput.includes(kw)) {
-                    matchedResponse = item.response;
-                    break;
-                }
-            }
-            if (matchedResponse) break;
-        }
-
-        if (matchedResponse) {
-            appendMessage(matchedResponse, 'bot');
-        } else {
-            const fallbackText = "Merci ! Pour une réponse plus détaillée et un accompagnement personnalisé sur votre dossier, contactez-nous sur Snapchat :";
-            appendMessage(fallbackText, 'bot', true);
-        }
+        msgDiv.className = `chatbot-msg ${sender}`;
+        msgDiv.innerText = text;
+        container.appendChild(msgDiv);
+        container.scrollTop = container.scrollHeight;
     }
 </script>
+
 </body>
 </html>
