@@ -1,0 +1,2948 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>JACKDA10 | Services Administratifs, Permis & Documents Officiels</title>
+    
+    <!-- Préchargement des ressources critiques pour fluidifier le rendu initial -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.phototourl.com">
+    <link rel="preconnect" href="https://images.unsplash.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #050507;
+            --card-bg: rgba(18, 18, 24, 0.85);
+            --accent: #dc2626;
+            --accent-glow: rgba(220, 38, 38, 0.3);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        @keyframes blink-red {
+          0%, 100% {
+            opacity: 1;
+            filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.8));
+          }
+          50% {
+            opacity: 0.3;
+            filter: drop-shadow(0 0 0px rgba(255, 0, 0, 0));
+          }
+        }
+
+        .logo-blink {
+          animation: blink-red 1s infinite ease-in-out;
+        }
+
+        @keyframes redBlinkBorder {
+            0% {
+                border-color: #dc2626;
+                box-shadow: 0 0 5px rgba(220, 38, 38, 0.4), inset 0 0 5px rgba(220, 38, 38, 0.2);
+            }
+            50% {
+                border-color: #ff1a1a;
+                box-shadow: 0 0 15px rgba(255, 26, 26, 0.9), inset 0 0 10px rgba(255, 26, 26, 0.5);
+            }
+            100% {
+                border-color: #dc2626;
+                box-shadow: 0 0 5px rgba(220, 38, 38, 0.4), inset 0 0 5px rgba(220, 38, 38, 0.2);
+            }
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        .info-arrow-animated {
+            display: inline-block;
+            animation: arrowBounce 0.8s infinite ease-in-out;
+            margin-left: 4px;
+            font-weight: bold;
+        }
+
+        .info-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+            box-shadow: none;
+        }
+
+        @keyframes infoBounceAttention {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .info-btn-attention {
+            animation: infoBounceAttention 0.8s infinite ease-in-out;
+            border-color: #dc2626 !important;
+            background: rgba(220, 38, 38, 0.2) !important;
+        }
+
+        @keyframes navbarGlowLine {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #dc2626, #ff4d4d, #dc2626, transparent);
+            background-size: 200% 100%;
+            animation: navbarGlowLine 3s infinite linear;
+            z-index: 10;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #dc2626, #ff4d4d, #dc2626, transparent);
+            background-size: 200% 100%;
+            animation: navbarGlowLine 3s infinite linear;
+            z-index: 10;
+        }
+
+        .bg-slideshow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -2;
+            overflow: hidden;
+            opacity: 0.95;
+            will-change: opacity;
+        }
+
+        .bg-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transform: scale(1);
+            transition: opacity 1.5s ease-in-out, transform 8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .bg-slide.active {
+            opacity: 1;
+            transform: scale(1.06);
+        }
+
+        .bg-slideshow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(5, 5, 7, 0.80), rgba(5, 5, 7, 0.88));
+            z-index: 1;
+        }
+
+        .glow-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(220, 38, 38, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(185, 28, 28, 0.08) 0%, transparent 45%);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 7, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            width: 100%;
+            transform: translateZ(0); /* Optimisation GPU iOS/Safari */
+        }
+
+        .announcement-bar {
+            background: linear-gradient(90deg, #b91c1c, #dc2626);
+            color: #ffffff;
+            text-align: center;
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+            padding: 8px 15px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 15px;
+        }
+
+        @keyframes logoGlowAnimation {
+            0% { text-shadow: 0 0 5px rgba(239, 68, 68, 0.4), 0 0 10px rgba(220, 38, 38, 0.2); }
+            50% { text-shadow: 0 0 15px rgba(239, 68, 68, 0.9), 0 0 25px rgba(220, 38, 38, 0.6); }
+            100% { text-shadow: 0 0 5px rgba(239, 68, 68, 0.4), 0 0 10px rgba(220, 38, 38, 0.2); }
+        }
+
+        .logo {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            animation: logoGlowAnimation 3s infinite ease-in-out;
+            white-space: nowrap;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: clamp(10px, 2vw, 20px);
+            font-weight: 500;
+            font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-links li {
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-links li:hover, .nav-links li.active {
+            color: var(--text-main);
+        }
+
+        .nav-trial-btn {
+            background: rgba(220, 38, 38, 0.15);
+            border: 1px solid #dc2626;
+            color: #ef4444 !important;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .nav-trial-btn:hover {
+            background: #dc2626;
+            color: #fff !important;
+        }
+
+        .hero {
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 0 15px;
+            width: 100%;
+        }
+
+        .hero-banner {
+            background: linear-gradient(145deg, rgba(18, 18, 24, 0.9), rgba(10, 10, 15, 0.7));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: clamp(25px, 4vw, 40px) clamp(15px, 3vw, 25px);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            align-items: center;
+            transform: translateZ(0);
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 350px;
+            height: 350px;
+            background: var(--accent-glow);
+            filter: blur(90px);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-banner h1 {
+            font-size: clamp(1.8rem, 4vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .hero-banner h1 span {
+            color: #dc2626;
+        }
+
+        .hero-banner p {
+            font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            width: 100%;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #dc2626;
+            flex-shrink: 0;
+        }
+
+        .stat-text h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-text p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #b91c1c, #dc2626);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px var(--accent-glow);
+            display: inline-block;
+            text-align: center;
+            flex: 1;
+            min-width: 140px;
+            touch-action: manipulation;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(220, 38, 38, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            text-align: center;
+            flex: 1;
+            min-width: 140px;
+            touch-action: manipulation;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .trust-section {
+            max-width: 1300px;
+            margin: 0 auto 40px;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .activation-badge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(220, 38, 38, 0.08);
+            border: 1px solid rgba(220, 38, 38, 0.25);
+            padding: 18px 20px;
+            border-radius: 18px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #ef4444;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .activation-badge i {
+            font-size: 1.6rem;
+            color: #dc2626;
+            flex-shrink: 0;
+        }
+
+        .compatibility-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .compatibility-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .compatibility-item i {
+            font-size: 1.2rem;
+            color: #dc2626;
+        }
+
+        .catalog {
+            max-width: 1300px;
+            margin: 50px auto;
+            padding: 0 15px;
+        }
+
+        .section-header {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .section-title {
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .search-bar-container {
+            margin-bottom: 30px;
+            position: relative;
+            max-width: 100%;
+            border: 2px solid #dc2626;
+            border-radius: 50px;
+            animation: redBlinkBorder 1.5s infinite ease-in-out;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 45px 15px 50px;
+            background: transparent;
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            background-color: rgba(220, 38, 38, 0.08);
+        }
+
+        .search-bar-container > i:first-child {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #dc2626;
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
+        .search-clear-btn {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-muted);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            touch-action: manipulation;
+        }
+
+        .search-clear-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .search-clear-btn:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 100%;
+            cursor: pointer;
+            transform: translateZ(0);
+        }
+
+        .product-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(90deg, transparent, #dc2626, #ff4d4d, #dc2626, transparent);
+            background-size: 300% 300%;
+            animation: navbarGlowLine 4s infinite linear;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .product-card:hover {
+            border-color: rgba(220, 38, 38, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(220, 38, 38, 0.1);
+        }
+
+        .product-image-container {
+            height: 180px;
+            background: #111;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+            will-change: transform;
+        }
+
+        .product-card:hover .product-image-container img {
+            transform: scale(1.08);
+        }
+
+        .product-image-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to top, rgba(18, 18, 24, 0.95), transparent);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(5, 5, 7, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--border);
+            color: #ef4444;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .product-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .product-category {
+            font-size: 0.72rem;
+            color: #ef4444;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        .product-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .features-list {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .features-list li {
+            font-size: 0.82rem;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            word-break: break-word;
+        }
+
+        .features-list li i {
+            color: #dc2626;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .select-group {
+            margin-bottom: 15px;
+        }
+
+        .select-group label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .duration-select {
+            width: 100%;
+            max-width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.04) url("data:image/svg+xml;utf8,<svg fill='%23ffffff' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 12px center;
+            background-size: 16px;
+            border: 2px solid #dc2626;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            animation: redBlinkBorder 1.5s infinite ease-in-out;
+            text-overflow: ellipsis;
+        }
+
+        .duration-select:hover, .duration-select:focus {
+            border-color: #ff1a1a;
+            background-color: rgba(220, 38, 38, 0.08);
+        }
+
+        .duration-select option {
+            background: #121218;
+            color: #fff;
+            white-space: normal;
+            word-wrap: break-word;
+            padding: 12px;
+            font-size: 0.82rem;
+        }
+
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .price-tag {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #ef4444;
+            word-break: break-word;
+        }
+
+        .btn-action-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .info-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: var(--transition);
+            touch-action: manipulation;
+        }
+
+        .info-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .add-cart-btn {
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+            touch-action: manipulation;
+        }
+
+        .add-cart-btn:hover {
+            background: #ef4444;
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+        }
+
+        .features-showcase {
+            max-width: 1300px;
+            margin: 60px auto;
+            padding: 0 15px;
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .showcase-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            height: 100%;
+            transform: translateZ(0);
+        }
+
+        .showcase-card:hover {
+            border-color: rgba(220, 38, 38, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .showcase-icon {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            background: rgba(220, 38, 38, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            color: #dc2626;
+            flex-shrink: 0;
+        }
+
+        .showcase-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .showcase-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .tutorial-section {
+            max-width: 1300px;
+            margin: 60px auto;
+            padding: 0 15px;
+        }
+
+        .tutorial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .tutorial-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            transform: translateZ(0);
+        }
+
+        .step-number {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #fff;
+            background: #dc2626;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .tutorial-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .tutorial-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            word-break: break-word;
+        }
+
+        .reviews-section {
+            max-width: 1300px;
+            margin: 60px auto;
+            padding: 0 15px;
+            overflow: hidden;
+        }
+
+        .reviews-carousel-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .reviews-track {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* Fluidité de défilement native sous iOS */
+            padding: 10px 5px 20px 5px;
+            cursor: grab;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--border);
+            will-change: scroll-position;
+        }
+
+        .reviews-track::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .reviews-track::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+        }
+
+        .reviews-track::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        .review-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-width: 280px;
+            max-width: 320px;
+            flex-shrink: 0;
+            user-select: none;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            transform: translateZ(0);
+        }
+
+        .review-card:hover {
+            border-color: rgba(220, 38, 38, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .review-stars {
+            color: #dc2626;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        .review-text {
+            font-size: 0.88rem;
+            color: #e2e8f0;
+            margin-bottom: 15px;
+            font-style: italic;
+            word-break: break-word;
+        }
+
+        .review-author {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            word-break: break-word;
+        }
+
+        .carousel-nav-btns {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .carousel-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            touch-action: manipulation;
+        }
+
+        .carousel-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .faq-section {
+            max-width: 1300px;
+            margin: 60px auto;
+            padding: 0 15px;
+        }
+
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transform: translateZ(0);
+        }
+
+        .faq-question {
+            padding: 18px 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            gap: 10px;
+            word-break: break-word;
+            touch-action: manipulation;
+        }
+
+        .faq-question:hover {
+            color: #ef4444;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: #dc2626;
+            flex-shrink: 0;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 400px;
+            padding: 0 20px 20px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            padding: 15px;
+            will-change: opacity, visibility;
+        }
+
+        .modal-overlay.open { opacity: 1; visibility: visible; }
+
+        .contact-modal {
+            background: #121218;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-overlay.open .contact-modal { transform: scale(1); }
+
+        .contact-modal h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        .contact-modal p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            word-break: break-word;
+            touch-action: manipulation;
+        }
+
+        .snapchat-btn { background: #fffc00; color: #000; }
+        .snapchat-btn:hover { background: #e5e200; }
+
+        .modal-close-text {
+            margin-top: 15px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: inline-block;
+            touch-action: manipulation;
+        }
+        .modal-close-text:hover { color: #fff; }
+
+        .copy-notification {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #dc2626;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.82rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 4000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            max-width: 90%;
+            will-change: transform;
+        }
+
+        .copy-notification.show { transform: translateX(-50%) translateY(0); }
+
+        /* BOUTONS DE DÉFILEMENT PLACÉS AU MILIEU DE LA PAGE À DROITE */
+        .page-scroll-buttons {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 2500;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .scroll-btn {
+            width: 45px;
+            height: 45px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            font-size: 1rem;
+            touch-action: manipulation;
+        }
+
+        .scroll-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(220, 38, 38, 0.4);
+        }
+
+        footer {
+            position: relative;
+            background: rgba(5, 5, 7, 0.95);
+            border-top: 1px solid var(--border);
+            padding: 40px 15px 20px;
+            margin-top: 60px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            width: 100%;
+            transform: translateZ(0);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+
+            .nav-links {
+                justify-content: center;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+            }
+
+            /* Sur mobile, on les garde en bas à droite pour ne pas gêner la lecture au centre */
+            .page-scroll-buttons {
+                bottom: 15px;
+                right: 15px;
+                top: auto;
+                transform: none;
+            }
+
+            .scroll-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-slideshow" id="bgSlideshow">
+        <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&auto=format&fit=crop&q=80');"></div>
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=1600&auto=format&fit=crop&q=80');"></div>
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?w=1600&auto=format&fit=crop&q=80');"></div>
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1600&auto=format&fit=crop&q=80');"></div>
+    </div>
+
+    <div class="glow-bg"></div>
+
+    <div class="copy-notification" id="copyNotification">📋 Message copié ! Colle-le sur Snapchat.</div>
+
+    <!-- BOUTONS DE DÉFILEMENT (Milieu à droite) -->
+    <div class="page-scroll-buttons">
+        <button class="scroll-btn" onclick="scrollToTop()" title="Remonter en haut"><i class="fa-solid fa-arrow-up"></i></button>
+        <button class="scroll-btn" onclick="scrollToBottom()" title="Aller tout en bas"><i class="fa-solid fa-arrow-down"></i></button>
+    </div>
+
+    <header>
+        <div class="announcement-bar">⚖️ EXPERTISES ADMINISTRATIVES & SERVICES OFFICIELS DEPUIS 10 ANS ⚖️</div>
+        <div class="navbar">
+            <div class="logo logo-blink" onclick="showMainPage()"><img src="https://cdn.phototourl.com/free/2026-09-06-71e36244-4bb6-40b1-9690-f93d7f98dce3.png" alt="JACKDA10" loading="eager"></div>
+            <ul class="nav-links">
+                <li class="active" onclick="showMainPage()">Accueil</li>
+                <li onclick="showMainPage(); document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})">Services</li>
+                <li onclick="showMainPage(); document.getElementById('tutorial-section').scrollIntoView({behavior: 'smooth'})">Démarches</li>
+                <li onclick="showMainPage(); document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'})">FAQ</li>
+                <li><span class="nav-trial-btn" onclick="openTrialModal()">📋 Consultation</span></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="modal-overlay" id="trialModal">
+        <div class="contact-modal">
+            <h3>📋 Obtenez votre Consultation Gratuite !</h3>
+            <p>Cliquez ci-dessous pour échanger sur votre dossier via Snapchat :</p>
+            <div class="social-buttons">
+                <a href="https://www.snapchat.com/@jackda10" target="_blank" rel="noopener noreferrer" class="social-btn snapchat-btn" onclick="copyTrialForSnap()">
+                    <i class="fa-brands fa-snapchat fa-lg"></i> Consultation via Snapchat
+                </a>
+            </div>
+            <span class="modal-close-text" onclick="closeTrialModal()">Fermer cette fenêtre</span>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="serviceDetailModal">
+        <div class="contact-modal" style="text-align: left;">
+            <div style="font-size: 0.72rem; color: #ef4444; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;" id="modalCatName">Catégorie</div>
+            <h3 id="modalServiceName" style="margin-bottom: 12px; font-size: 1.3rem;">Nom du Service</h3>
+            <p id="modalServiceDesc" style="margin-bottom: 20px; color: var(--text-muted); line-height: 1.6; word-break: break-word;">Description détaillée du service sélectionné.</p>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <span style="font-size: 0.85rem; font-weight: 700;">Tarif de la prestation :</span>
+                <span id="modalServicePrice" style="font-size: 1.2rem; font-weight: 800; color: #ef4444;">0€</span>
+            </div>
+            <div style="display: flex; gap: 10px; flex-direction: column;">
+                <button class="social-btn snapchat-btn" id="modalOrderBtn" style="width: 100%; padding: 14px; font-weight: 800;">
+                    <i class="fa-brands fa-snapchat fa-lg"></i> Commander via Snapchat
+                </button>
+                <span class="modal-close-text" style="text-align: center;" onclick="closeServiceDetailModal()">Fermer cette fenêtre</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="orderPopupModal">
+        <div class="contact-modal" style="text-align: center;">
+            <div style="width: 50px; height: 50px; background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #dc2626; font-size: 1.3rem;">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            <h3 style="margin-bottom: 8px;">Récapitulatif de Commande</h3>
+            <p id="popupOrderSummary" style="font-size: 0.9rem; color: #fff; font-weight: 600; margin-bottom: 15px; background: rgba(255,255,255,0.04); padding: 12px; border-radius: 10px; border: 1px solid var(--border); word-break: break-word;">Service sélectionné</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">En cliquant ci-dessous, le message sera copié et vous serez redirigé vers notre Snapchat pour valider votre commande.</p>
+            <div class="social-buttons">
+                <button class="social-btn snapchat-btn" id="confirmOrderSnapBtn" style="padding: 14px; font-weight: 800;">
+                    <i class="fa-brands fa-snapchat fa-lg"></i> Valider et Commander sur Snapchat
+                </button>
+            </div>
+            <span class="modal-close-text" onclick="closeOrderPopup()">Annuler</span>
+        </div>
+    </div>
+
+    <!-- CONTENEUR PAGE PRINCIPALE -->
+    <div id="mainPageContainer">
+        <section class="hero">
+            <div class="hero-banner">
+                <div class="hero-content">
+                    <h1>Solutions Administratives & <span>Permis sur Mesure</span></h1>
+                    <p>Spécialiste depuis 10 ans dans la gestion de dossiers complexes : annulation de permis, rattrapage de points, amendes, certificats et titres officiels.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})">Voir nos prestations</button>
+                        <button class="btn-secondary" onclick="openTrialModal()">📋 Consultation Gratuite</button>
+                    </div>
+                </div>
+                <div class="hero-stats-card">
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fa-solid fa-award"></i></div>
+                        <div class="stat-text">
+                            <h4>10 Ans d'Expérience</h4>
+                            <p>Une expertise reconnue et sécurisée</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fa-solid fa-user-secret"></i></div>
+                        <div class="stat-text">
+                            <h4>100% Confidentiel</h4>
+                            <p>Discrétion absolue garantie</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="stat-text">
+                            <h4>Réactivité Maximale</h4>
+                            <p>Prise en charge rapide de votre dossier</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="trust-section">
+            <div class="activation-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div>
+                    <strong>Sécurité & Conformité</strong>
+                    <div style="font-size: 0.78rem; font-weight: 400; color: var(--text-muted); margin-top: 2px;">Traitement rigoureux et professionnel de vos pièces</div>
+                </div>
+            </div>
+            <div class="compatibility-card">
+                <div class="compatibility-item"><i class="fa-solid fa-car-rear"></i><span>Permis & Route</span></div>
+                <div class="compatibility-item"><i class="fa-solid fa-file-shield"></i><span>Dossiers & Amendes</span></div>
+                <div class="compatibility-item"><i class="fa-solid fa-graduation-cap"></i><span>Diplômes & Certificats</span></div>
+            </div>
+        </div>
+
+        <section class="catalog" id="catalog-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Nos Prestations & Services</h2>
+                    <p class="section-subtitle">Sélectionnez la catégorie pour ouvrir sa page dédiée avec tous les détails</p>
+                </div>
+            </div>
+
+            <div class="search-bar-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un service (ex:amende,permis,arrêt de travail,diplôme...)" oninput="filterProducts()">
+                <button type="button" id="searchClearBtn" class="search-clear-btn" onclick="clearSearchInput()" title="Effacer la recherche"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="product-grid" id="productGrid"></div>
+        </section>
+
+        <section class="features-showcase">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Domaines d'Expertise</h2>
+                    <p class="section-subtitle">Une prise en charge globale pour toutes vos contraintes administratives</p>
+                </div>
+            </div>
+            <div class="showcase-grid">
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-car"></i></div>
+                    <h3>Rattrapage & Permis</h3>
+                    <p>Gestion des dossiers d'annulation, code de la route, tests psychotechniques et permis ou 125cc.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-file-shield"></i></div>
+                    <h3>Gestion des Amendes</h3>
+                    <p>Grille tarifaire claire et adaptée pour le traitement de vos amendes et forfaits majorés.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-file-medical"></i></div>
+                    <h3>Certificats & Justificatifs</h3>
+                    <p>Délivrance de certificats d'hospitalisation et justificatifs pour aménagement d'horaires et bracelet.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-folder-open"></i></div>
+                    <h3>Dossiers & Logement</h3>
+                    <p>Appui rigoureux pour vos justificatifs, dossiers de logement, arrêts de travail et contestations.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-hospital"></i></div>
+                    <h3>Tests & Examens Médicaux</h3>
+                    <p>Accompagnement pour contrôles techniques, prises de sang, tests urinaires et protocoles.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-certificate"></i></div>
+                    <h3>Diplômes & Formations</h3>
+                    <p>Certifications officielles, cartes professionnelles et documents administratifs spécifiques.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tutorial-section" id="tutorial-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Comment ça marche ?</h2>
+                    <p class="section-subtitle">Un traitement de dossier en 3 étapes simples</p>
+                </div>
+            </div>
+            <div class="tutorial-grid">
+                <div class="tutorial-card">
+                    <span class="step-number">Étape 01</span>
+                    <h3>Exposez votre situation</h3>
+                    <p>Contactez-nous via Snapchat pour nous faire part de votre problématique (permis, amende, examen, etc.).</p>
+                </div>
+                <div class="tutorial-card">
+                    <span class="step-number">Étape 02</span>
+                    <h3>Étude du dossier</h3>
+                    <p>Notre équipe analyse vos pièces justificatives et valide la faisabilité de votre accompagnement en moins de 24h.</p>
+                </div>
+                <div class="tutorial-card">
+                    <span class="step-number">Étape 03</span>
+                    <h3>Résolution & Suivi</h3>
+                    <p>Finalisation de la démarche administrative ou obtention de vos documents officiels en toute sérénité.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="reviews-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Témoignages de nos clients</h2>
+                    <p class="section-subtitle">Faites glisser de gauche à droite ou utilisez les flèches pour découvrir les avis</p>
+                </div>
+                <div class="carousel-nav-btns">
+                    <button class="carousel-btn" onclick="scrollReviews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="carousel-btn" onclick="scrollReviews(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="reviews-carousel-wrapper">
+                <div class="reviews-track" id="reviewsTrack">
+                    <!-- Avis initiaux -->
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Traitement d'amende record et communication nickel sur Snapchat."</p>
+                        </div>
+                        <div class="review-author">— Karim B. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Problème de logement solutionné rapidement."</p>
+                        </div>
+                        <div class="review-author">— Sarah L. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Service discret, professionnel et de confiance."</p>
+                        </div>
+                        <div class="review-author">— Thomas D. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Attestations et assurances provisoires traitées avec sérieux."</p>
+                        </div>
+                        <div class="review-author">— Mehdi R. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Accompagnement efficace pour le permis et le code."</p>
+                        </div>
+                        <div class="review-author">— Alexandre N. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Très réactif sur Snapchat."</p>
+                        </div>
+                        <div class="review-author">— Laura C. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Certificat pour le travail obtenu en moins de 24h."</p>
+                        </div>
+                        <div class="review-author">— David G. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Grande maîtrise des procédures administratives complexes."</p>
+                        </div>
+                        <div class="review-author">— Nassim H. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Dossier d'auto-entreprise parfaitement géré."</p>
+                        </div>
+                        <div class="review-author">— Chloé M. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Service client impeccable et à l'écoute."</p>
+                        </div>
+                        <div class="review-author">— Jordan P. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Traitement rapide des amendes majorées."</p>
+                        </div>
+                        <div class="review-author">— Lucas B. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Aide irréprochable pour des tests médicaux."</p>
+                        </div>
+                        <div class="review-author">— Camille T. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Attestation décennale conforme et rapide."</p>
+                        </div>
+                        <div class="review-author">— Yassine K. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Suivi rigoureux et vrai sens du service."</p>
+                        </div>
+                        <div class="review-author">— Mélanie F. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Problèmes administratifs réglés en quelques jours avec efficacité."</p>
+                        </div>
+                        <div class="review-author">— Kevin W. (Client vérifié)</div>
+                    </div>
+                    <!-- 15 avis supplémentaires ajoutés -->
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Incroyable réduction sur mon voyage vol + hôtel, merci !"</p>
+                        </div>
+                        <div class="review-author">— Sofiane M. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Réservation validée sans accroc, économies au top."</p>
+                        </div>
+                        <div class="review-author">— Inès V. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Top service, très professionnel pour toutes mes démarches."</p>
+                        </div>
+                        <div class="review-author">— Enzo R. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Efficace et rapide, je recommande les yeux fermés."</p>
+                        </div>
+                        <div class="review-author">— Manon S. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Super pour économiser sur les vacances !"</p>
+                        </div>
+                        <div class="review-author">— Rayan E. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Personne de confiance, réactive sur les réseaux."</p>
+                        </div>
+                        <div class="review-author">— Pauline D. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"J'ai pu partir en vacances grâce aux -50%, merci JACKDA10 !"</p>
+                        </div>
+                        <div class="review-author">— Bilal K. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Parfait, rien à redire, communication fluide."</p>
+                        </div>
+                        <div class="review-author">— Clara J. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Un vrai gain de temps et d'argent."</p>
+                        </div>
+                        <div class="review-author">— Nathan G. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Service client ultra carré, bravo."</p>
+                        </div>
+                        <div class="review-author">— Sarah M. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Réductions appliquées immédiatement sans problème."</p>
+                        </div>
+                        <div class="review-author">— Hugo P. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Au top pour les voyages et les démarches."</p>
+                        </div>
+                        <div class="review-author">— Maëva L. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Très satisfaite de la prestation, merci encore !"</p>
+                        </div>
+                        <div class="review-author">— Océane B. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Toujours présent pour répondre aux questions."</p>
+                        </div>
+                        <div class="review-author">— Alexis T. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Le meilleur dans son domaine, confiant à 100%."</p>
+                        </div>
+                        <div class="review-author">— Samy C. (Client vérifié)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section" id="faq-section">
+            <div class="section-header" style="text-align: center; display: block;">
+                <h2 class="section-title">Foire Aux Questions (FAQ)</h2>
+                <p class="section-subtitle">Les réponses à vos interrogations administratives</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">Comment prendre contact pour mon dossier ? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Vous pouvez nous joindre directement via Snapchat en cliquant sur les boutons de commande ou de consultation pour un échange 100% confidentiel.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">Quels sont les délais de traitement ? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Les premières analyses de dossiers sont effectuées en moins de 24h. Chaque cas bénéficie d'un suivi personnalisé selon sa complexité.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">Mes données personnelles sont-elles protégées ? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Absolument. Forts de nos 10 années d'expérience, nous garantissons la stricte confidentialité de l'ensemble des documents et informations transmis.</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- CONTENEUR PAGE DE CATEGORIE DÉDIÉE -->
+    <div id="categoryDetailPageContainer" style="display: none; max-width: 1300px; margin: 40px auto; padding: 0 15px;">
+        <button class="btn-secondary" onclick="showMainPage()" style="margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; width: auto; min-width: unset;">
+            <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+        </button>
+        <div id="categoryDetailContent"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 JACKDA10. Tous droits réservés. Service d'accompagnement administratif et de gestion de dossiers depuis 10 ans.</p>
+    </footer>
+
+    <script>
+        const mySnapchatUrl = "https://www.snapchat.com/@jackda10";
+
+        const categories = [
+                   {
+                      id: "amendes",
+                      name: "Amendes & Procédures",
+                      category: "Amendes & Procédures",
+                      desc: "Grille tarifaire officielle pour la prise en charge de vos amendes et forfaits majorés.",
+                      img: "https://leocare.eu/fr/wp-content/uploads/2025/04/avis-contravention.jpg",
+                      badge: "Tarifs Fixes",
+                      features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans", "Nous pouvons traiter vos amendes sans aucune perte de points sur votre permis", "Nous pouvons traiter vos amendes uniquement en l'absence de contrôle de police en flagrant délit !"],
+                      services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Amende initiale de 35 € ➔ 10 € ", 
+                        price: "10 €", 
+                        info: "Au lieu de payer votre amende à 35 €, vous la payez 10 €." 
+                    },
+                    { 
+                        name: "Amende initiale de 45 € -1 point ➔ 40 € ", 
+                        price: "40 €", 
+                        info: "Au lieu de payer 45 € et de perdre 1 point sur votre permis, vous payez 40 € et vous ne perdez pas votre point." 
+                    },
+                    { 
+                        name: "Amende initiale de 45 € ➔ 20 € ", 
+                        price: "20 €", 
+                        info: "Au lieu de payer votre amende à 45 €, vous payez 20 € sans aucune perte de points." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 € -1 point ➔ 60 € ", 
+                        price: "60 €", 
+                        info: "Au lieu de régler 90 € et de perdre 1 point, vous payez 60 € et vous conservez votre point." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 €  -2 points ➔ 80 € ", 
+                        price: "80 €", 
+                        info: "Au lieu de payer les 90 € et de perdre 2 points sur votre permis, vous payez 80 € et vous ne perdez pas vos 2 points." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 € -3 points ➔ 100 € ", 
+                        price: "100 €", 
+                        info: "Au lieu de débourser 90 € et d'écoper d'un retrait de 3 points, vous payez 100 € pour éviter la perte des 3 points." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 € -4 points ➔ 120 € ", 
+                        price: "120 €", 
+                        info: "Au lieu de payer 90 € et de perdre 4 points, vous payez 120 € pour protéger l'intégralité de vos points." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 € -6 points ➔ 150 € ", 
+                        price: "150 €", 
+                        info: "Au lieu de payer 90 € et de perdre lourdement 6 points, vous payez 150 € et vous ne perdez aucun point." 
+                    },
+                    { 
+                        name: "Amende initiale de 135 € ➔ 50 € ", 
+                        price: "50 €", 
+                        info: "Au lieu de régler l'amende initiale de 135 €, vous ne payez que 50 €  sans perte de points." 
+                    },
+                    { 
+                        name: "Amende initiale de 135 € -3 points ➔ 100 € ", 
+                        price: "100 €", 
+                        info: "Au lieu de payer 135 € et de perdre 3 points, vous payez 100 € et vous évitez le retrait de points." 
+                    },
+                    { 
+                        name: "Amende Forfaitaire Majorée initiale de 375 € ➔ 150 € ", 
+                        price: "150 €", 
+                        info: "Au lieu de payer votre amende majorée à 375 €, vous la réglez à seulement 150 € " 
+                    },
+                    { 
+                        name: "Amende initiale de 180 € ➔ 100 € ", 
+                        price: "100 €", 
+                        info: "Au lieu de payer votre amende initiale de 180 €, vous la payez 100 € " 
+                    }
+                ]
+            },
+            {
+                id: "certificats",
+                name: "Certificats & Justificatifs Spéciaux",
+                category: "Certificats Officiels",
+                desc: "Documents et attestations pour gestion du bracelet, retards et hospitalisations.",
+                img: "https://cnp-edn.org/wp-content/uploads/2024/04/certification-periodique.jpg",
+                badge: "Essentiel",
+                features: ["Discrétion absolue", "Conforme et sécurisé", "Validation express"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Certificat d'hospitalisation", 
+                        price: "100€", 
+                        info: "<br><br>Attestation officielle d'hospitalisation pour couvrir vos retards ou obligations (ex: rentrée de nuit avec bracelet).<br><br><strong>Tarif :</strong> 100€" 
+                    }
+                ]
+            },
+            {
+                id: "decennale",
+                name: "Attestation Décennale",
+                category: "Assurance & Bâtiment",
+                desc: "Attestation décennale sur mesure pour présenter à vos clients.",
+                img: "https://www.revital-assurances.com/wp-content/uploads/2026/07/assurance-decennale-artisan-pas-cher-image-2.jpg",
+                badge: "Professionnel",
+                features: ["Pour ceux qui on pas d'assurance chantier", "Seulement pour présenter au client", "Pas déclarer"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Attestation Décennale", 
+                        price: "100€", 
+                        info: "<br><br><em>(POUR CEUX QUI ON A PAS D'ASSURANCE CHANTIER SEULEMENT POUR PRÉSENTER AU CLIENT PAS DÉCLARER)</em><br><br><strong>Documents et informations à fournir :</strong><br>• Raison sociale : **********<br>• Adresse : **********\n• Code postal / Ville : **********\n• Téléphone : **********\n• N° Siret : **********\n• Email : **********\n• Activités garanties : ********** (Exemple : Charpente et structure en bois, couverture ...)" 
+                    }
+                ]
+            },
+            {
+                id: "booking",
+                name: "Booking -50%",
+                category: "Voyages & Réservations",
+                desc: "Profitez de réductions exceptionnelles sur vos réservations d'hôtel.",
+                img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80",
+                badge: "Offre Spéciale",
+                features: ["Économies garanties", "Réservation rapide", "Réservez dès maintenant !"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Hôtel + de 1000 €", 
+                        price: "Sur Devis", 
+                        info: "<strong>Hôtel (plus de 1000 €) :</strong> -50 % de réduction ! Réservez dès maintenant !" 
+                    },
+                    { 
+                        name: "Hôtel - de 1000 €", 
+                        price: "Sur Devis", 
+                        info: "<strong>Hôtel (moins de 1000 €) :</strong> -40 % de réduction ! Réservez dès maintenant !" 
+                    }
+                ]
+            },
+            {
+                id: "permis",
+                name: "Permis, Route & Véhicules",
+                category: "Permis & Route",
+                desc: "Gestion complète de vos situations liées au permis de conduire, contrôles et habilitations.",
+                img: "https://media.ouest-france.fr/v1/pictures/MjAyNDAyNjE5ODdiNDg5Mzc1ODZkNGI3OGJlNmZjN2ZlOTJhNGU?width=1260&height=708&focuspoint=50%2C25&cropresize=1&client_id=bpeditorial&sign=46b5a527355ff8e166d2fba9435f69508d63ba0f807678c5d684afeaec7660a9",
+                badge: "Sur Devis",
+                features: ["Suivi personnalisé", "Traitement rapide", "Expertise 10 ans"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Permis B (sans déplacement)", 
+                        price: "Sur Devis (Sous Conditions)", 
+                        info: "<br><br>Accompagnement, constitution de dossier et démarches réglementaires pour l'obtention du Permis B sans déplacement aux examens physiques traditionnels.<br><br><strong>Tarif<br><strong>(Sous Conditions) :</strong> Sur Devis" 
+                    },
+                    { 
+                        name: "Code de la route complet auto/moto", 
+                        price: "Sur Devis", 
+                        info: "<br><br>Accompagnement complet pour l'obtention de votre code de la route auto ou moto sans vous déplacer." 
+                    },
+                    { 
+                        name: "Création code NEPH", 
+                        price: "50€", 
+                        info: "<br><br>Permet de pouvoir se présenter à l'examen du code de la route et à la conduite." 
+                    },
+                    { 
+                        name: "Contrôle technique sans présentation du véhicule", 
+                        price: "Sur Devis", 
+                        info: "<br><br><strong>Documents et informations à fournir :</strong><br>• CARTE GRISE EN PHOTO LISIBLE<br>• VIDÉO DU VÉHICULE<br>• PHOTO DU COMPTEUR AVEC LE KILOMÉTRAGE<br><br><strong>TRÈS IMPORTANT :</strong><br>• PAS DE VOITURE EN FOURRIÈRE<br>• SI FICHE D'IMMOBILISATION BESOIN EN MAIN PROPRE<br>• PAS DE VÉHICULE ACCIDENTÉ" 
+                    },
+                    { 
+                        name: "Assurance 1 mois provisoire tout véhicules", 
+                        price: "Sur Devis", 
+                        info: "<br><br>Solution d'assurance temporaire rapide et adaptée pour tous types de véhicules.<br><br><strong>Informations à fournir :</strong><br>• Plaque : *********_<br>• Nom de la société (si c'est une société, sinon laisser vide) : *********_<br>• Nom : *********_<br>• Prénom : *********_<br>• Adresse : *********_<br>• Marque du véhicule : *********_<br>• Modèle du véhicule : *********_<br>• Année du véhicule : *********_<br>• Assurance authentique et enregistrée dans les fichiers de la police" 
+                    },
+                    { 
+                        name: "Relevé d'assurance", 
+                        price: "Sur Devis", 
+                        info: "(pour pouvoir obtenir un meilleur prix chez son assureur) </strong><br><br>• Nom :<br>• Prenom :<br>• Adresse :<br>• Date de naissance :<br>• Date d'obtention du permis :<br>• Marque ; modele ; immatriculation du Véhicule :<br>• Bonus :<br>• Date de debut d'assurance :" 
+                    },
+                    { name: "Rattrapage de points +4", price: "Sur Devis", info: "Procédure d'accompagnement pour le stage ou rattrapage de points." },
+                    { 
+                        name: "Carte 125cc", 
+                        price: "80€", 
+                        info: "<strong>CARTE 125CC / ATTESTATION</strong><br><br>Pour pouvoir conduire un 125cc, être titulaire du permis (B) de conduire voiture depuis au moins 2 ans.<br><br><strong>Tarif :</strong> 80€" 
+                    },
+                    { 
+                        name: "Permis Bateau", 
+                        price: "Sur Devis", 
+                        info: "<br><br>Permis bateau Français sans déplacement au bateau école." 
+                    }
+                ]
+            },
+            {
+                id: "medical",
+                name: "Tests Médicaux & Analyses",
+                category: "Médical & Tests",
+                desc: "Accompagnement pour vos examens médicaux, bilans sanguins et tests réglementaires.",
+                img: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=600&auto=format&fit=crop&q=80",
+                badge: "Sur Devis",
+                features: ["Protocoles sécurisés", "Discrétion garantie", "réduction selon le nombre de documents", "Conseils experts"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { name: "Prise de Sang Alcool Négatif", price: "150€", info: "Accompagnement pour les protocoles de prise de sang." },
+                    { 
+                        name: "Test Urinaire / Stupéfiant", 
+                        price: "150€", 
+                        info: "<strong>Informations personnelles :</strong><br><br>• Nom : *********<br>• Prénom : *********<br>• Adresse : *******<br>• Date de naissance : *<br>• Lieu de naissance : *<br>• Téléphone (optionnel) : **<br>• N° Permis [neph] (optionnel) : ***<br><br><strong>Situation du permis de conduire :</strong><br>• Annulation ou suspension du permis : *****<br>• (Durée de la suspension) : **<br>• Motifs (perte de points, alcool ou stup) : *****<br>• Date du rdv commission médicale : *****" 
+                    },
+                    { name: "Test Psychotechnique", price: "150€", info: "Préparation et démarches pour vos tests psychotechniques." }
+                ]
+            },
+                {
+                id: "Location",
+                name: "SIXT",
+                category: "Location",
+                desc: "Profitez de réductions exceptionnelles sur vos locations de véhicule.",
+                img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/43/f9/2e/sixt-rent-a-car-miami.jpg?w=700&h=-1&s=1",
+                badge: "SIXT -50%",
+                features: ["Un large choix de véhicules", "La liberté de voyager", "Le confort sur la route !"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Location de véhicule", 
+                        price: "Sur Devis", 
+                        info: "<strong>Profitez dès maintenant de 50% de réduction sur votre prochaine location de véhicule chez Sixt.<strong><br>Que vous ayez besoin d'une citadine agile pour la ville ou d'un SUV spacieux pour voyager en toute sécurité, trouvez le modèle qui vous correspond." 
+                    }
+                ]
+            },
+            {
+                id: "administratif",
+                name: "Dossiers Administratifs & Officiels",
+                category: "Administratif & Officiel",
+                desc: "Assistance pour vos dossiers du quotidien, arrêts de travail, logement et diplômes.",
+                img: "https://www.petite-entreprise.net/wp-content/uploads/2021/11/administratif-37-1.jpg",
+                badge: "Populaire",
+                features: ["Support global", "Conformité des pièces", "Accompagnement de A à Z"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Création auto-entreprise", 
+                        price: "Sur Devis", 
+                        info: "<br><br>• Carte d'identité recto verso<br>• Numéro de secu (les 15 numéros avec la clé)<br>• Justificatif de domicile (-3 mois)<br>• Nom et prénoms des parents (tous les prénoms figurant sur la carte d'identité)<br>• Numéro de tél<br>• Justificatif permettant l'ouverture de l'autoentreprise selon le secteur (diplôme, certificat...)" 
+                    },
+                    { 
+                        name: "DIPLÔME BAC / CAP / MASTER / BREVET / TOEIC...", 
+                        price: "Sur Devis", 
+                        info: "<br><br><strong>Documents et informations à fournir :</strong><br>• CARTE IDENTITÉ EN PHOTO RECTO VERSO<br>• ANNÉE D'OBTENTION<br><br><strong>Possibilité d'ouvrir tous types de commerce ou société.</strong>" 
+                    },
+                    { 
+                        name: "DIPLÔME DELF A1/A2/B1/B2...", 
+                        price: "Sur Devis", 
+                        info: "<strong>DIPLÔME DE LANGUE POUR PERSONNE ÉTRANGÈRE POUR DEMANDE DE TITRE DE SÉJOUR OU PROLONGATION (POUR LES DEMANDES EN PRÉFECTURE)</strong>" 
+                    },
+                    { 
+                        name: "EXAMEN CIVIQUE POUR LES ÉTRANGERS", 
+                        price: "Sur Devis", 
+                        info: "<strong>EXAMEN CIVIQUE POUR LES ÉTRANGERS</strong>" 
+                    },
+                    { 
+                        name: "Avis d'impôt", 
+                        price: "100€", 
+                        info: "<strong>Avis impôt - Informations à fournir :</strong><br><br>• Nom<br>• Prénom<br>• Adresse<br>• Montant de l'avis d'imposition<br>• Situation de famille : Marié(e) / Pacsé(e) / Célibataire / Veuf(ve)<br>• Nombre d'enfants" 
+                    },
+                    { 
+                        name: "Arrêt de Travail", 
+                        price: "30€", 
+                        info: "<strong>Documents et informations à fournir :</strong><br><br>• N° de Sécurité sociale (15 chiffres avec la clé)<br>• Nom<br>• Prénom<br>• Adresse<br>• Date de début de l'arrêt<br>• Date de fin de l'arrêt<br>• Motif" 
+                    },
+                    { 
+                        name: "Dossier Logement", 
+                        price: "350€", 
+                        info: "(POUR POUVOIR OBTENIR UN APPARTEMENT DANS LE PRIVÉ) </strong><br><br>- inclus dans le pack :</strong><br><br>• 3 fiches de paie<br>• 1 contrat de travail<br>• 1 avis d'impôt" 
+                    }
+                ]
+            }
+        ];
+
+        function renderProducts(filterText = '') {
+            const grid = document.getElementById('productGrid');
+            if (!grid) return;
+            
+            const query = filterText.toLowerCase().trim();
+            let htmlContent = '';
+
+            categories.forEach(cat => {
+                const filteredServices = cat.services.filter((srv, idx) => {
+                    if (idx === 0 && query !== '') return false;
+                    return srv.name.toLowerCase().includes(query) || 
+                           cat.name.toLowerCase().includes(query) || 
+                           cat.category.toLowerCase().includes(query);
+                });
+
+                if (query !== '' && filteredServices.length === 0) {
+                    return;
+                }
+
+                const servicesToDisplay = (query !== '') ? filteredServices : cat.services;
+
+                const optionsHtml = servicesToDisplay.map((srv, idx) => {
+                    if (query === '' && idx === 0) {
+                        return `<option value="" disabled selected>${srv.name}</option>`;
+                    }
+                    const originalIdx = cat.services.indexOf(srv);
+                    return `<option value="${originalIdx}">${srv.name}</option>`;
+                }).join('');
+
+                const featuresHtml = cat.features.map(f => 
+                    `<li><i class="fa-solid fa-check"></i> ${f}</li>`
+                ).join('');
+
+                const initialPrice = "---";
+
+                htmlContent += `
+                    <div class="product-card" onclick="openCategoryPage('${cat.id}')">
+                        <div class="product-badge">${cat.badge}</div>
+                        <div class="product-image-container">
+                            <img src="${cat.img}" alt="${cat.name}" loading="lazy">
+                        </div>
+                        <div class="product-content">
+                            <div>
+                                <div class="product-category">${cat.category}</div>
+                                <div class="product-title">${cat.name}</div>
+                                <p class="product-desc">${cat.desc}</p>
+                                <ul class="features-list">
+                                    ${featuresHtml}
+                                </ul>
+                                <div class="select-group" onclick="event.stopPropagation()">
+                                    <label>Sélectionnez votre service :</label>
+                                    <select class="duration-select" id="select-${cat.id}" onchange="updatePrice('${cat.id}')">
+                                        ${optionsHtml}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="product-footer" onclick="event.stopPropagation()">
+                                <div class="price-tag" id="price-${cat.id}">${initialPrice}</div>
+                                <div class="btn-action-group">
+                                    <button class="info-btn info-btn-attention" id="info-btn-${cat.id}" onclick="openServiceDetailModal('${cat.id}')" disabled>
+                                        <i class="fa-solid fa-circle-info"></i> Info <span class="info-arrow-animated">➔</span>
+                                    </button>
+                                    <button class="add-cart-btn" onclick="openOrderPopup('${cat.id}')">Commander</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = htmlContent;
+
+            categories.forEach(cat => {
+                setTimeout(() => updatePrice(cat.id), 0);
+            });
+        }
+
+        function openCategoryPage(catId) {
+            const cat = categories.find(c => c.id === catId);
+            if (!cat) return;
+
+            document.getElementById('mainPageContainer').style.display = 'none';
+            const detailContainer = document.getElementById('categoryDetailPageContainer');
+            const detailContent = document.getElementById('categoryDetailContent');
+
+            let servicesListHtml = '';
+            cat.services.forEach((srv, idx) => {
+                if (idx === 0) return; // Ignore le placeholder "Sélectionner un service"
+                servicesListHtml += `
+                    <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; backdrop-filter: blur(10px);">
+                        <div style="flex: 1; min-width: 250px;">
+                            <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; color: #fff;">${srv.name}</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; word-break: break-word;">${srv.info}</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.15rem; font-weight: 800; color: #ef4444; white-space: nowrap;">${srv.price}</span>
+                            <button class="add-cart-btn" onclick="openOrderPopupDirect('${cat.id}', ${idx})">Commander</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const featuresListHtml = cat.features.map(f => `<li><i class="fa-solid fa-check" style="color: #dc2626;"></i> ${f}</li>`).join('');
+
+            detailContent.innerHTML = `
+                <div style="background: linear-gradient(145deg, rgba(18, 18, 24, 0.95), rgba(10, 10, 15, 0.8)); border: 1px solid var(--border); border-radius: 24px; padding: clamp(20px, 4vw, 40px); margin-bottom: 30px; backdrop-filter: blur(12px);">
+                    <div style="display: flex; gap: 30px; flex-wrap: wrap; align-items: center;">
+                        <div style="flex: 1; min-width: 280px;">
+                            <div style="font-size: 0.75rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">${cat.category}</div>
+                            <h1 style="font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 12px; line-height: 1.2;">${cat.name}</h1>
+                            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">${cat.desc}</p>
+                            <ul style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                                ${featuresListHtml}
+                            </ul>
+                        </div>
+                        <div style="width: 320px; max-width: 100%; height: 220px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border);">
+                            <img src="${cat.img}" alt="${cat.name}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+                <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 20px;">Tous les services disponibles de cette catégorie :</h3>
+                ${servicesListHtml}
+            `;
+
+            detailContainer.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showMainPage() {
+            document.getElementById('categoryDetailPageContainer').style.display = 'none';
+            document.getElementById('mainPageContainer').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openOrderPopupDirect(catId, serviceIdx) {
+            const cat = categories.find(c => c.id === catId);
+            const selectedService = cat.services[serviceIdx];
+
+            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
+            
+            document.getElementById('popupOrderSummary').innerText = `${cat.name} : ${selectedService.name} (${selectedService.price})`;
+            document.getElementById('orderPopupModal').classList.add('open');
+
+            const confirmBtn = document.getElementById('confirmOrderSnapBtn');
+            confirmBtn.onclick = function() {
+                closeOrderPopup();
+                copyAndOpenSnapchat(currentOrderText);
+            };
+        }
+
+        function filterProducts() {
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (searchInput) {
+                const val = searchInput.value;
+                if (val.trim() !== '') {
+                    clearBtn.classList.add('visible');
+                } else {
+                    clearBtn.classList.remove('visible');
+                }
+                renderProducts(val);
+            }
+        }
+
+        function clearSearchInput() {
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (searchInput) {
+                searchInput.value = '';
+                clearBtn.classList.remove('visible');
+                renderProducts('');
+                searchInput.focus();
+            }
+        }
+
+        function updatePrice(catId) {
+            const selectElement = document.getElementById(`select-${catId}`);
+            const priceTag = document.getElementById(`price-${catId}`);
+            const infoBtn = document.getElementById(`info-btn-${catId}`);
+            const selectedValue = selectElement.value;
+
+            const cat = categories.find(c => c.id === catId);
+
+            if (selectedValue === "" || selectedValue === null) {
+                priceTag.innerText = "---";
+                infoBtn.disabled = true;
+                infoBtn.classList.add('info-btn-attention');
+            } else {
+                const serviceIndex = parseInt(selectedValue);
+                const selectedService = cat.services[serviceIndex];
+                
+                priceTag.innerText = selectedService.price;
+                infoBtn.disabled = false;
+                infoBtn.classList.remove('info-btn-attention');
+            }
+        }
+
+        function openServiceDetailModal(catId) {
+            const cat = categories.find(c => c.id === catId);
+            const select = document.getElementById(`select-${catId}`);
+            const selectedValue = select.value;
+
+            if (selectedValue === "" || selectedValue === null) return;
+
+            const serviceIndex = parseInt(selectedValue);
+            const selectedService = cat.services[serviceIndex];
+
+            document.getElementById('modalCatName').innerText = cat.category;
+            document.getElementById('modalServiceName').innerText = selectedService.name;
+            document.getElementById('modalServiceDesc').innerHTML = selectedService.info || cat.desc;
+            document.getElementById('modalServicePrice').innerText = selectedService.price;
+
+            const orderBtn = document.getElementById('modalOrderBtn');
+            orderBtn.onclick = function() {
+                closeServiceDetailModal();
+                openOrderPopup(catId);
+            };
+
+            document.getElementById('serviceDetailModal').classList.add('open');
+        }
+
+        function closeServiceDetailModal() {
+            document.getElementById('serviceDetailModal').classList.remove('open');
+        }
+
+        let currentOrderText = "";
+
+        function openOrderPopup(catId) {
+            const cat = categories.find(c => c.id === catId);
+            const select = document.getElementById(`select-${catId}`);
+            const selectedValue = select.value;
+
+            if (selectedValue === "" || selectedValue === null) {
+                alert("Veuillez d'abord sélectionner un service dans la liste déroulante.");
+                return;
+            }
+
+            const serviceIndex = parseInt(selectedValue);
+            const selectedService = cat.services[serviceIndex];
+
+            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
+            
+            document.getElementById('popupOrderSummary').innerText = `${cat.name} : ${selectedService.name} (${selectedService.price})`;
+            document.getElementById('orderPopupModal').classList.add('open');
+
+            const confirmBtn = document.getElementById('confirmOrderSnapBtn');
+            confirmBtn.onclick = function() {
+                closeOrderPopup();
+                copyAndOpenSnapchat(currentOrderText);
+            };
+        }
+
+        function closeOrderPopup() {
+            document.getElementById('orderPopupModal').classList.remove('open');
+        }
+
+        function copyAndOpenSnapchat(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopyNotification();
+                    setTimeout(() => {
+                        window.open(mySnapchatUrl, '_blank');
+                    }, 600);
+                }).catch(() => {
+                    window.open(mySnapchatUrl, '_blank');
+                });
+            } else {
+                window.open(mySnapchatUrl, '_blank');
+            }
+        }
+
+        function openTrialModal() {
+            document.getElementById('trialModal').classList.add('open');
+        }
+
+        function closeTrialModal() {
+            document.getElementById('trialModal').classList.remove('open');
+        }
+
+        function copyTrialForSnap() {
+            const trialText = "Bonjour JACKDA10, je souhaite obtenir une consultation gratuite concernant mes démarches administratives.";
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(trialText).then(() => {
+                    showCopyNotification();
+                    setTimeout(() => {
+                        window.open(mySnapchatUrl, '_blank');
+                    }, 600);
+                });
+            } else {
+                window.open(mySnapchatUrl, '_blank');
+            }
+        }
+
+        function showCopyNotification() {
+            const notif = document.getElementById('copyNotification');
+            notif.classList.add('show');
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3000);
+        }
+
+        function toggleFaq(element) {
+            const item = element.parentElement;
+            item.classList.toggle('active');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        const track = document.getElementById('reviewsTrack');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let autoScrollInterval;
+
+        if (track) {
+            track.addEventListener('mousedown', (e) => {
+                isDown = true;
+                track.style.cursor = 'grabbing';
+                startX = e.pageX - track.offsetLeft;
+                scrollLeft = track.scrollLeft;
+                stopAutoScroll();
+            });
+
+            track.addEventListener('mouseleave', () => {
+                isDown = false;
+                track.style.cursor = 'grab';
+                startAutoScroll();
+            });
+
+            track.addEventListener('mouseup', () => {
+                isDown = false;
+                track.style.cursor = 'grab';
+                startAutoScroll();
+            });
+
+            track.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - track.offsetLeft;
+                const walk = (x - startX) * 2;
+                track.scrollLeft = scrollLeft - walk;
+            });
+
+            track.addEventListener('mouseenter', stopAutoScroll);
+            track.addEventListener('mouseleave', startAutoScroll);
+        }
+
+        function scrollReviews(direction) {
+            stopAutoScroll();
+            const scrollAmount = 350;
+            track.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+            setTimeout(startAutoScroll, 3000);
+        }
+
+        function startAutoScroll() {
+            stopAutoScroll();
+            if (!track) return;
+            autoScrollInterval = setInterval(() => {
+                if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+                    track.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    track.scrollBy({ left: 320, behavior: 'smooth' });
+                }
+            }, 4000);
+        }
+
+        function stopAutoScroll() {
+            if (autoScrollInterval) {
+                clearInterval(autoScrollInterval);
+            }
+        }
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.bg-slide');
+
+        let nextSlide = function() {
+            if (slides.length > 0) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+        };
+
+        setInterval(nextSlide, 6000);
+
+        window.onload = () => {
+            renderProducts();
+            startAutoScroll();
+        };
+    </script>
+<!-- ==========================================
+     CHATBOT INTÉGRÉ - CODE MODIFIÉ (BAS GAUCHE)
+     ========================================== -->
+
+<!-- Styles CSS du Chatbot -->
+<style>
+    /* Conteneur principal du widget de chat en BAS À GAUCHE */
+    #chatbot-widget {
+        position: fixed;
+        bottom: 20px;
+        left: 20px; /* Déplacé à gauche */
+        z-index: 9999;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Bouton flottant pour ouvrir/fermer le chatbot */
+    #chatbot-toggle-btn {
+        background: linear-gradient(135deg, #b91c1c, #dc2626);
+        color: #ffffff;
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    #chatbot-toggle-btn:hover {
+        transform: scale(1.08);
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+    }
+
+    /* Fenêtre de discussion positionnée à gauche (Desktop par défaut) */
+#chatbot-window {
+    position: absolute;
+    bottom: 75px;
+    left: 0; /* Aligné à gauche par rapport au bouton */
+    width: 350px;
+    max-width: 90vw;
+    height: 480px;
+    background: #121218;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: chatSlideIn 0.3s ease forwards;
+}
+
+/* Adaptation pour les téléphones (écrans de 480px de large ou moins) */
+@media screen and (max-width: 480px) {
+    #chatbot-window {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 85vh; /* Occupe une grande partie de la hauteur de l'écran mobile */
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+}
+
+    @keyframes chatSlideIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* En-tête de la fenêtre de chat */
+    .chatbot-header {
+        background: rgba(18, 18, 24, 0.95);
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .chatbot-header-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .chatbot-avatar {
+        width: 35px;
+        height: 35px;
+        background: #dc2626;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.9rem;
+    }
+
+    .chatbot-title h4 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .chatbot-title span {
+        font-size: 0.72rem;
+        color: #94a3b8;
+    }
+
+    .chatbot-close {
+        background: none;
+        border: none;
+        color: #94a3b8;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+
+    .chatbot-close:hover {
+        color: #fff;
+    }
+
+    /* Corps de la conversation (historique des messages) */
+    .chatbot-body {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: #0a0a0f;
+    }
+
+    .chat-message {
+        max-width: 80%;
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+
+    .chat-message.bot {
+        background: rgba(255, 255, 255, 0.06);
+        color: #e2e8f0;
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .chat-message.user {
+        background: #dc2626;
+        color: #fff;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+    }
+
+    /* Bouton Snapchat jaune demandé (#FFFC00) intégré dans les messages complexes */
+    .snapchat-action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+        background: #fffc00 !important;
+        color: #000000 !important;
+        font-weight: 800;
+        font-size: 0.82rem;
+        padding: 10px 16px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: background 0.2s, transform 0.2s;
+        box-shadow: 0 4px 12px rgba(255, 252, 0, 0.3);
+    }
+
+    .snapchat-action-btn:hover {
+        background: #e5e200 !important;
+        transform: translateY(-2px);
+    }
+
+    /* Zone de saisie du message utilisateur */
+    .chatbot-footer {
+        padding: 12px 15px;
+        background: rgba(18, 18, 24, 0.95);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        gap: 8px;
+    }
+
+    .chatbot-input {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        padding: 10px 15px;
+        color: #fff;
+        font-size: 0.85rem;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .chatbot-input:focus {
+        border-color: #dc2626;
+    }
+
+    .chatbot-send-btn {
+        background: #dc2626;
+        color: #fff;
+        border: none;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        flex-shrink: 0;
+    }
+
+    .chatbot-send-btn:hover {
+        background: #ef4444;
+    }
+</style>
+
+<!-- Structure HTML du Widget de Chat -->
+<div id="chatbot-widget">
+    <!-- Bouton flottant -->
+    <button id="chatbot-toggle-btn" onclick="toggleChatbot()" title="Besoin d'aide ? Discutez avec notre assistant">
+        <i class="fa-solid fa-comments"></i>
+    </button>
+
+    <!-- Fenêtre de chat -->
+    <div id="chatbot-window">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="chatbot-title">
+                    <h4>Assistant JACKDA10</h4>
+                    <span>En ligne</span>
+                </div>
+            </div>
+            <button class="chatbot-close" onclick="toggleChatbot()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="chatbot-body" id="chatbotBody">
+            <!-- Message d'accueil automatique -->
+            <div class="chat-message bot">
+                Bonjour ! Je suis l'assistant virtuel de JACKDA10. Comment puis-je vous aider aujourd'hui (permis, amendes, réductions booking, certificats...) ?
+            </div>
+        </div>
+
+        <div class="chatbot-footer">
+            <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Posez votre question ici..." onkeydown="handleChatKeyDown(event)">
+            <button class="chatbot-send-btn" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- Script JavaScript du Chatbot -->
+<script>
+    const SNAPCHAT_URL = "https://www.snapchat.com/@jackda10";
+
+    const chatbotKnowledgeBase = [
+        {
+            keywords: ["amende", "amendes", "contravention", "majorée", "90", "45", "35"],
+            response: "Nous gérons vos amendes et forfaits majorés avec des tarifs fixes (à partir de 10€) et un traitement sans perte de points sur votre permis (hors flagrant délit). Souhaitez-vous valider votre prise en charge ?"
+        },
+        {
+            keywords: ["salut", "bonjour", "salam", "coucou", "hey", "yo", "ça va", "cv", "wesh"],
+            response: "Salut à toi ! Comment ça va ? Dis-moi comment je peux t'aider aujourd'hui."
+        },
+        {
+            keywords: ["merci", "top", "cool", "impec", "impeccable", "super", "génial", "merci bcp"],
+            response: "Avec plaisir ! N'hésite pas si tu as d'autres questions ou besoin d'un coup de main. 😊"
+        },
+        {
+            keywords: ["certificat", "hospitalisation", "travail", "arret", "arrêt", "justificatif", "medical", "médical", "maladie", "boulot"],
+            response: "On propose des documents officiels et certificats d'hospitalisation en toute confidentialité pour tes démarches ou ton travail. Contacte-nous pour voir les détails."
+        },
+        {
+            keywords: ["au revoir", "bye", "a+klin", "à plus", "tchao"],
+            response: "À bientôt ! Passe une excellente journée et n'hésite pas à repasser si besoin."
+        },
+        {
+            keywords: ["permis", "decenale", "points", "code", "annulation", "retrait", "conduite"],
+            response: "Spécialiste depuis 10 ans dans l'accompagnement des dossiers de permis, annulation, code et tests psychotechniques. Nous vous offrons une assistance discrète et sécurisée."
+        },
+        {
+            keywords: ["booking", "hôtel", "hotel", "vacances", "partir", "billet", "reservation", "réservation", "reductions", "réduction", "-50", "moins cher"],
+            response: "Tu veux voyager sans te ruiner ? On te propose jusqu'à -50% de réduction sur tes réservations d'hôtels Dis-nous ta destination sur Snapchat !"
+        },
+        {
+            keywords: ["contact", "joindre", "parler", "humain", "personne", "telephone", "téléphone", "discuter", "aide", "sos", "admin", "createur", "soutenir", "repondre", "répondre", "bot", "robot"],
+            response: "Le plus simple pour qu'on discute de ton cas le mieux c'est de nous écrire directement sur notre Snapchat officiel !"
+        },
+        {
+           keywords: ["aide", "comment", "fonctionne", "tutoriel", "guide"],
+           response: "Je suis là pour vous guider ! Dites-moi ce que vous cherchez (par exemple : les tarifs, les horaires ou la création de dossier) et je vous orienterai."
+        },
+        {  
+           keywords: ["snap", "snapchat"],
+           response: "Voici mon snapchat @ JACKDA10"
+        },
+        {
+            keywords: ["sûr", "fiable", "arnaque", "confiance", "sérieux", "vrai", "légitime", "legit", "escroc", "fake", "sur", "c'est sur", "c'est une arnaque"],
+            response: "Tu peux avoir total confiance : on a des années d'expérience et des milliers de clients satisfaits. Viens échanger avec nous en direct, on te prouvera notre sérieux !"
+        },
+        {
+    keywords: ["sixt", "agence", "caution", "depot de garantie", "prix", "cher", "louer", "voiture", "reservation", "annulation", "frais", "carte bancaire"],
+    response: "Profitez de -50% sur votre location chez Sixt ! Avec un large choix de véhicules récents, la liberté de voyager et un confort optimal sur la route, partez l'esprit tranquille. Réservez vite pour en profiter !"
+        },
+        {
+            keywords: ["tarif", "prix", "combien", "coout", "coût", "coute", "coûte", "devis", "c'est combien", "payer", "paiement", "euro", "euros", "€", "c'est cher", "gratuit", "argent", "facture"],
+            response: "Nos tarifs sont super accessibles (amendes dès 10€, devis sur mesure pour le reste). C'est rapide, discret et efficace. Viens voir avec nous sur Snapchat pour chiffrer ton besoin !"
+        }
+    ];
+
+    function toggleChatbot() {
+        const windowElem = document.getElementById('chatbot-window');
+        if (windowElem.style.display === 'flex') {
+            windowElem.style.display = 'none';
+        } else {
+            windowElem.style.display = 'flex';
+            document.getElementById('chatbotInput').focus();
+        }
+    }
+
+    function handleChatKeyDown(event) {
+        if (event.key === 'Enter') {
+            sendChatMessage();
+        }
+    }
+
+    function sendChatMessage() {
+        const inputElem = document.getElementById('chatbotInput');
+        const userText = inputElem.value.trim();
+        if (!userText) return;
+
+        appendMessage(userText, 'user');
+        inputElem.value = '';
+
+        setTimeout(() => {
+            generateBotResponse(userText);
+        }, 500);
+    }
+
+    function appendMessage(text, sender, isComplex = false) {
+        const bodyElem = document.getElementById('chatbotBody');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `chat-message ${sender}`;
+        
+        if (isComplex) {
+            msgDiv.innerHTML = text + `<br><a href="${SNAPCHAT_URL}" target="_blank" rel="noopener noreferrer" class="snapchat-action-btn"><i class="fa-brands fa-snapchat"></i> Contactez-nous sur Snapchat</a>`;
+        } else {
+            msgDiv.textContent = text;
+        }
+
+        bodyElem.appendChild(msgDiv);
+        bodyElem.scrollTop = bodyElem.scrollHeight;
+    }
+
+    function generateBotResponse(userInput) {
+        const cleanInput = userInput.toLowerCase();
+        let matchedResponse = null;
+
+        for (const item of chatbotKnowledgeBase) {
+            for (const kw of item.keywords) {
+                if (cleanInput.includes(kw)) {
+                    matchedResponse = item.response;
+                    break;
+                }
+            }
+            if (matchedResponse) break;
+        }
+
+        if (matchedResponse) {
+            appendMessage(matchedResponse, 'bot');
+        } else {
+            const fallbackText = "Merci ! Pour une réponse plus détaillée et un accompagnement personnalisé sur votre dossier, contactez-nous sur Snapchat :";
+            appendMessage(fallbackText, 'bot', true);
+        }
+    }
+</script>
+</body>
+</html>
