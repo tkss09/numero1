@@ -4680,4 +4680,19 @@ function openCategoryServiceInfo(catId, serviceIdx) {
 </script>
 
 
+
+<script id="homepage-force-top-on-load">
+(function(){
+  function goTop(){
+    try { window.scrollTo({top: 0, left: 0, behavior: 'auto'}); }
+    catch(e) { window.scrollTo(0, 0); }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', goTop, {once:true});
+  } else {
+    goTop();
+  }
+  window.addEventListener('load', goTop, {once:true});
+})();
+</script>
 </body></html>
