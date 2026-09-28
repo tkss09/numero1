@@ -2266,6 +2266,177 @@ html, body {
     #catalog-section #productGrid .product-card::before { transition: none; }
 }
 </style>
+
+<style id="homepage-final-polish-only">
+/* =========================================================
+   AMÉLIORATION VISUELLE PAGE PRINCIPALE UNIQUEMENT
+   La page dédiée n'est volontairement pas ciblée.
+   ========================================================= */
+
+/* Hero : hiérarchie plus nette et présence plus premium */
+#mainPageContainer .hero-banner {
+    border-color: rgba(255,255,255,.11) !important;
+    box-shadow: 0 28px 70px rgba(0,0,0,.52), 0 0 0 1px rgba(220,38,38,.035) inset !important;
+}
+#mainPageContainer .hero-content h1 {
+    text-wrap: balance;
+}
+#mainPageContainer .hero-content h1 span {
+    text-shadow: 0 0 18px rgba(220,38,38,.18);
+}
+#mainPageContainer .hero-buttons .btn-primary,
+#mainPageContainer .hero-buttons .btn-secondary {
+    min-height: 48px;
+}
+#mainPageContainer .hero-buttons .btn-primary:focus-visible,
+#mainPageContainer .hero-buttons .btn-secondary:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+/* Têtes de sections plus lisibles */
+#mainPageContainer .section-header {
+    position: relative;
+}
+#mainPageContainer .section-title {
+    position: relative;
+    padding-left: 13px;
+}
+#mainPageContainer .section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .15em;
+    bottom: .15em;
+    width: 3px;
+    border-radius: 4px;
+    background: #dc2626;
+    box-shadow: 0 0 10px rgba(220,38,38,.45);
+}
+
+/* Catégories : impression de carte réellement interactive */
+#mainPageContainer #productGrid .product-card {
+    isolation: isolate;
+    will-change: transform;
+    outline: none;
+}
+#mainPageContainer #productGrid .product-card::after {
+    opacity: .72;
+    transition: opacity .3s ease, filter .3s ease;
+}
+#mainPageContainer #productGrid .product-card:hover::after,
+#mainPageContainer #productGrid .product-card:focus-visible::after {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(220,38,38,.16));
+}
+#mainPageContainer #productGrid .product-card:focus-visible {
+    outline: 2px solid rgba(239,68,68,.9);
+    outline-offset: 3px;
+}
+#mainPageContainer #productGrid .product-card:active {
+    transform: translateY(-1px) scale(.995);
+}
+
+/* Indicateur placé SUR LA PETITE PHOTO, en bas à droite */
+#mainPageContainer #catalog-section #productGrid .product-card::before {
+    top: auto !important;
+    right: 10px !important;
+    bottom: calc(100% - 180px + 10px) !important;
+    left: auto !important;
+    transform: none !important;
+    z-index: 20 !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,.28);
+}
+#mainPageContainer #catalog-section #productGrid .product-card:hover::before {
+    transform: translateY(-2px) scale(1.025) !important;
+}
+@media (max-width: 700px) {
+    #mainPageContainer #catalog-section #productGrid .product-card::before {
+        top: auto !important;
+        right: 8px !important;
+        bottom: calc(100% - 180px + 9px) !important;
+        left: auto !important;
+        font-size: .58rem !important;
+        padding: 6px 9px !important;
+    }
+}
+
+/* Photo de catégorie : léger zoom seulement au survol */
+#mainPageContainer #productGrid .product-image-container {
+    position: relative;
+}
+#mainPageContainer #productGrid .product-image-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.20) 100%);
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+#mainPageContainer #productGrid .product-card:hover .product-image-container::before {
+    opacity: .82;
+}
+
+/* Recherche : meilleure sensation de contrôle */
+#mainPageContainer .search-bar-container:focus-within {
+    box-shadow: 0 0 0 4px rgba(220,38,38,.08), 0 12px 35px rgba(0,0,0,.25);
+}
+
+/* Cartes de confiance / avantages */
+#mainPageContainer .activation-badge,
+#mainPageContainer .compatibility-card,
+#mainPageContainer .showcase-card {
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+#mainPageContainer .activation-badge:hover,
+#mainPageContainer .compatibility-card:hover,
+#mainPageContainer .showcase-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(220,38,38,.28);
+    box-shadow: 0 14px 35px rgba(0,0,0,.20);
+}
+
+/* Avis : carte plus vivante sans animation permanente */
+#mainPageContainer .review-card {
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+#mainPageContainer .review-card:hover {
+    box-shadow: 0 14px 30px rgba(0,0,0,.22);
+}
+
+/* Respect du réglage de réduction des animations */
+@media (prefers-reduced-motion: reduce) {
+    #mainPageContainer .activation-badge,
+    #mainPageContainer .compatibility-card,
+    #mainPageContainer .showcase-card,
+    #mainPageContainer .review-card {
+        transition: none !important;
+    }
+}
+
+/* Smartphone : garder une page aérée et des zones tactiles confortables */
+@media (max-width: 700px) {
+    #mainPageContainer .section-header {
+        margin-bottom: 18px;
+    }
+    #mainPageContainer .section-title {
+        padding-left: 11px;
+    }
+    #mainPageContainer .product-grid {
+        gap: 14px;
+    }
+    #mainPageContainer .product-content {
+        padding: 16px;
+    }
+    #mainPageContainer .product-title {
+        font-size: 1.05rem;
+    }
+    #mainPageContainer .product-desc {
+        font-size: .82rem;
+    }
+}
+</style>
 </head>
 <body>
 
