@@ -4072,6 +4072,71 @@ function openCategoryServiceInfo(catId, serviceIdx) {
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
+
+    /* Bulle de pensée d'accueil du chatbot */
+    #chatbot-greeting-bubble {
+        position: absolute;
+        left: 8px;
+        bottom: 72px;
+        width: max-content;
+        max-width: 245px;
+        padding: 11px 15px;
+        background: #fff;
+        color: #17171c;
+        border: 2px solid #dc2626;
+        border-radius: 18px;
+        font-size: .82rem;
+        font-weight: 800;
+        line-height: 1.25;
+        box-shadow: 0 8px 22px rgba(0,0,0,.25);
+        z-index: 10000;
+        animation: chatbotThoughtFloat 1.8s ease-in-out infinite;
+        transform-origin: bottom left;
+        transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
+    }
+    #chatbot-greeting-bubble::after {
+        content: '';
+        position: absolute;
+        left: 18px;
+        bottom: -9px;
+        width: 15px;
+        height: 15px;
+        background: #fff;
+        border-right: 2px solid #dc2626;
+        border-bottom: 2px solid #dc2626;
+        transform: rotate(45deg);
+    }
+    #chatbot-greeting-bubble::before {
+        content: '';
+        position: absolute;
+        left: 5px;
+        bottom: -18px;
+        width: 7px;
+        height: 7px;
+        background: #fff;
+        border: 2px solid #dc2626;
+        border-radius: 50%;
+    }
+    #chatbot-greeting-bubble.hidden {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px) scale(.92);
+        animation: none;
+    }
+    @keyframes chatbotThoughtFloat {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-4px) scale(1.02); }
+    }
+    @media (max-width: 700px) {
+        #chatbot-greeting-bubble {
+            left: 2px;
+            bottom: 69px;
+            max-width: 210px;
+            padding: 10px 13px;
+            font-size: .76rem;
+        }
+    }
+
     /* Bouton flottant pour ouvrir/fermer le chatbot */
     #chatbot-button {
         width: 60px;
@@ -4270,7 +4335,8 @@ function openCategoryServiceInfo(catId, serviceIdx) {
 
 <!-- Structure HTML du Chatbot -->
 <div id="chatbot-widget">
-    <button id="chatbot-button" onclick="toggleChatbot()" title="Besoin d'aide ?">
+    <div id="chatbot-greeting-bubble" role="status">Bonjour 👋<br>Ta besoin d'aide ?</div>
+    <button id="chatbot-button" onclick="hideChatbotGreeting(); toggleChatbot()" title="Besoin d'aide ?">
         <i class="fa-solid fa-comments"></i>
     </button>
 
@@ -4301,6 +4367,17 @@ function openCategoryServiceInfo(catId, serviceIdx) {
 
 <!-- Script JS du Chatbot -->
 <script>
+
+    function hideChatbotGreeting() {
+        const bubble = document.getElementById('chatbot-greeting-bubble');
+        if (bubble) bubble.classList.add('hidden');
+    }
+
+    // La bulle d'accueil disparaît dès que l'utilisateur commence à faire défiler la page.
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 20) hideChatbotGreeting();
+    }, { passive: true });
+
     function toggleChatbot() {
         const win = document.getElementById('chatbot-window');
         win.classList.toggle('open');
