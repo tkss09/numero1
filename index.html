@@ -2210,6 +2210,62 @@ html, body {
   #mainPageContainer .faq-section details { transition: none !important; }
 }
 </style>
+
+<style id="homepage-category-clickable-hint">
+/* Indication visuelle des catégories cliquables — page principale uniquement */
+#catalog-section #productGrid .product-card {
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: rgba(220,38,38,.16);
+}
+#catalog-section #productGrid .product-card::before {
+    content: 'Voir les services  →';
+    position: absolute;
+    top: 164px;
+    bottom: auto;
+    left: auto;
+    right: 10px;
+    transform: none;
+    z-index: 12;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(5,5,7,.88);
+    border: 1px solid rgba(239,68,68,.55);
+    color: #fff;
+    font-size: .62rem;
+    font-weight: 800;
+    letter-spacing: .15px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: .92;
+    transition: transform .25s ease, background .25s ease, border-color .25s ease, opacity .25s ease;
+    pointer-events: none;
+}
+#catalog-section #productGrid .product-card:hover::before {
+    transform: translateY(-2px) scale(1.03);
+    background: rgba(220,38,38,.18);
+    border-color: rgba(239,68,68,.9);
+    opacity: 1;
+}
+#catalog-section #productGrid .product-card:active {
+    transform: translateY(-1px) scale(.995);
+}
+@media (max-width: 700px) {
+    #catalog-section #productGrid .product-card::before {
+        content: 'Appuyez pour voir les services  →';
+        top: 145px;
+        bottom: auto;
+        left: auto;
+        right: 8px;
+        transform: none;
+        font-size: .58rem;
+        padding: 6px 9px;
+        opacity: 1;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    #catalog-section #productGrid .product-card::before { transition: none; }
+}
+</style>
 </head>
 <body>
 
