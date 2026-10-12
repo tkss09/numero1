@@ -6472,7 +6472,7 @@ function toggleFaq(element) {
 
 <!-- Structure HTML du Chatbot -->
 <div id="chatbot-widget">
-    <div id="chatbot-greeting-bubble" role="status">Bonjour 👋<br>Besoin d'aide pour choisir un service ?</div>
+    <div id="chatbot-greeting-bubble" role="status">Bonjour 👋<br>Ta besoin d'aide ?</div>
     <button id="chatbot-button" onclick="hideChatbotGreeting(); toggleChatbot()" title="Besoin d'aide ?">
         <i class="fa-solid fa-comments"></i>
     </button>
@@ -6945,5 +6945,81 @@ html.light-theme #chatbot-greeting-bubble::before {
     }
 }
 </style>
+
+
+<!-- Protection anti-copie : dissuasion uniquement, ajoutée sans modifier le contenu existant. -->
+<style id="anti-copy-deterrence">
+    /* Empêche la sélection accidentelle du contenu et le glisser-déposer des images.
+       Les champs de formulaire restent sélectionnables et utilisables. */
+    html.anti-copy-mode body,
+    html.anti-copy-mode body * {
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        -webkit-touch-callout: none;
+    }
+    html.anti-copy-mode input,
+    html.anti-copy-mode textarea,
+    html.anti-copy-mode select,
+    html.anti-copy-mode [contenteditable="true"],
+    html.anti-copy-mode input *,
+    html.anti-copy-mode textarea * {
+        -webkit-user-select: text !important;
+        user-select: text !important;
+        -webkit-touch-callout: default;
+    }
+    html.anti-copy-mode img {
+        -webkit-user-drag: none;
+        user-drag: none;
+    }
+    @media print {
+        body { visibility: hidden !important; }
+    }
+</style>
+<script id="anti-copy-deterrence-script">
+(function () {
+    'use strict';
+    document.documentElement.classList.add('anti-copy-mode');
+
+    function isEditable(target) {
+        return !!(target && target.closest &&
+            target.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]'));
+    }
+
+    // Dissuade les actions de copie et l'ouverture du menu contextuel.
+    document.addEventListener('contextmenu', function (event) {
+        if (!isEditable(event.target)) event.preventDefault();
+    }, true);
+
+    document.addEventListener('dragstart', function (event) {
+        if (!isEditable(event.target)) event.preventDefault();
+    }, true);
+
+    document.addEventListener('copy', function (event) {
+        if (!isEditable(event.target)) event.preventDefault();
+    }, true);
+
+    document.addEventListener('cut', function (event) {
+        if (!isEditable(event.target)) event.preventDefault();
+    }, true);
+
+    document.addEventListener('selectstart', function (event) {
+        if (!isEditable(event.target)) event.preventDefault();
+    }, true);
+
+    // Raccourcis courants d'affichage/enregistrement du code ou d'impression.
+    // Ne bloque pas les raccourcis de saisie dans les champs de formulaire.
+    document.addEventListener('keydown', function (event) {
+        if (isEditable(event.target)) return;
+        var key = (event.key || '').toLowerCase();
+        var blocked = key === 'f12' ||
+            ((event.ctrlKey || event.metaKey) && ['u', 's', 'p'].includes(key)) ||
+            ((event.ctrlKey || event.metaKey) && event.shiftKey && ['i', 'j', 'c'].includes(key));
+        if (blocked) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    }, true);
+})();
+</script>
 
 </body></html>
